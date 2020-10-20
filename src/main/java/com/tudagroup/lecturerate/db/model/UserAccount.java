@@ -12,7 +12,6 @@ public class UserAccount implements UserDetails{
     private String password;
     private String name;
     private Integer semester;
-    private String faculty; //FB
     private String areaOfExpertise; // Fachgebiet
     private Degree degree;
 
