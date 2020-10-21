@@ -3,17 +3,26 @@ package com.tudagroup.lecturerate.db.model;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
-@Table(name="user_account")
+@Table(name="UserAccount")
 public class UserAccount implements UserDetails{
+    @Id
+    @NotBlank
     private String email;
+    @NotBlank
     private String password;
+    @NotBlank
     private String name;
-    private Integer semester;
-    private String areaOfExpertise; // Fachgebiet
+    private Short semester;
     private Degree degree;
+    @ManyToOne
+    @JoinColumn(name = "facultyID")
+    private Faculty faculty; // Fachgebiet
 
     public String getEmail() {
         return email;
@@ -69,28 +78,20 @@ public class UserAccount implements UserDetails{
         this.name = name;
     }
 
-    public Integer getSemester() {
+    public Short getSemester() {
         return semester;
     }
 
-    public void setSemester(Integer semester) {
+    public void setSemester(Short semester) {
         this.semester = semester;
     }
 
-    public String getFaculty() {
+    public Faculty getFaculty() {
         return faculty;
     }
 
-    public void setFaculty(String faculty) {
+    public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
-    }
-
-    public String getAreaOfExpertise() {
-        return areaOfExpertise;
-    }
-
-    public void setAreaOfExpertise(String areaOfExpertise) {
-        this.areaOfExpertise = areaOfExpertise;
     }
 
     public Degree getDegree() {
