@@ -1,4 +1,4 @@
-package com.vaadin.tutorial.crm;
+package com.tudagroup.lecturerate;
 
 import java.io.Serializable;
 

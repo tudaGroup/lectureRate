@@ -13,7 +13,7 @@ public class Course {
     private String name;
     private Boolean available;
     @Enumerated(EnumType.ORDINAL)
-    private Category category;
+    private String category;
     @ManyToOne
     @JoinColumn(name = "profID")
     private Professor professor;
@@ -26,7 +26,7 @@ public class Course {
 
     public Course(){}
 
-    public Course(String id, String name, Boolean available, Category category, Professor professor, Expertise expertise, Integer cp, Semester wsss, String description) {
+    public Course(String id, String name, Boolean available, String category, Professor professor, Expertise expertise, Integer cp, Semester wsss, String description) {
         courseID = id;
         this.name = name;
         this.available = available;
@@ -62,11 +62,11 @@ public class Course {
         this.available = available;
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 

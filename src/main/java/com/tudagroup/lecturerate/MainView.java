@@ -1,4 +1,4 @@
-package com.vaadin.tutorial.crm;
+package com.tudagroup.lecturerate;
 
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
