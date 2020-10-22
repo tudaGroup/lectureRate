@@ -7,10 +7,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CourseRepository extends JpaRepository<Course, Long> {
-    Optional<Course> findByCourseID(String id);
-    Optional<Course> findByName(String name);
+    Optional<Course> findById(String id);
+    List<Course> findByName(String name);
+    List<Course> findByAvailable();
     List<Course> findByCategory(String category);
     List<Course> findByProfessor(Professor professor);
-    List<Course> findByExpertise(Expertise expertise);
-    List<Course> findByWsss(Semester semester);
+    List<Course> findByField(Field field);
+    List<Course> findBySemester(Semester semester);
 }

@@ -2,18 +2,23 @@ package com.tudagroup.lecturerate.db.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "Professor")
 public class Professor {
     @Id
     @GeneratedValue( strategy = GenerationType.AUTO)
-    private Long profID;
+    private Long id;
     @NotBlank
+    @NotNull
     private String name;
 
+    public void setProfID(Long profID) {
+        this.id = profID;
+    }
+
     public long getProfID() {
-        return profID;
+        return id;
     }
 
     public String getName() {

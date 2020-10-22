@@ -3,15 +3,10 @@ package com.tudagroup.lecturerate.db.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name="Review")
 @IdClass(ReviewId.class)
 public class Review {
-    @Id
-    @ManyToOne
-    private UserAccount userAccount;
-    @Id
-    @ManyToOne
-    private Course course;
+    @EmbeddedId
+    private ReviewId id;
     private Short orating;
     private String comment;
     private Short presentation;
@@ -23,20 +18,30 @@ public class Review {
     private Short exercises;
     private Short material;
 
+    public void setId(ReviewId id) {
+        this.id = id;
+    }
+
+    public ReviewId getId() {
+        return id;
+    }
+
+    @Transient
     public UserAccount getUserAccount() {
-        return userAccount;
+        return getId().getUserAccount();
     }
 
-    public void setUserAccount(UserAccount userAccount) {
-        this.userAccount = userAccount;
+    public void setUserAccount(UserAccount user) {
+        getId().setUserAccount(user);
     }
 
+    @Transient
     public Course getCourse() {
-        return course;
+        return getId().getCourse();
     }
 
     public void setCourse(Course course) {
-        this.course = course;
+        getId().setCourse(course);
     }
 
     public Short getOrating() {

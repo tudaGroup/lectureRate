@@ -2,48 +2,50 @@ package com.tudagroup.lecturerate.db.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="Course")
 public class Course {
     @Id
     @NotBlank
-    private String courseID;
+    private String id;
     @NotBlank
+    @NotNull
     private String name;
+    @NotNull
     private Boolean available;
-    @Enumerated(EnumType.ORDINAL)
     private String category;
     @ManyToOne
-    @JoinColumn(name = "profID")
+    @JoinColumn(name = "professor_id")
     private Professor professor;
     @ManyToOne
-    private Expertise expertise;
+    @JoinColumn(name = "field_id")
+    private Field field;
     private Integer cp;
     @Enumerated(EnumType.ORDINAL)
-    private Semester wsss;
+    private Semester semester;
     private String description;
 
     public Course(){}
 
-    public Course(String id, String name, Boolean available, String category, Professor professor, Expertise expertise, Integer cp, Semester wsss, String description) {
-        courseID = id;
+    public Course(String id, String name, Boolean available, String category, Professor professor, Field field, Integer cp, Semester wsss, String description) {
+        id = id;
         this.name = name;
         this.available = available;
         this.category = category;
         this.professor = professor;
-        this.expertise = expertise;
+        this.field = field;
         this.cp = cp;
-        this.wsss = wsss;
+        this.semester = wsss;
         this.description = description;
     }
 
     public String getID() {
-        return courseID;
+        return id;
     }
 
     public void setID(String ID) {
-        this.courseID = ID;
+        this.id = ID;
     }
 
     public String getName() {
@@ -78,12 +80,12 @@ public class Course {
         this.professor = professor;
     }
 
-    public Expertise getExpertise() {
-        return expertise;
+    public Field getExpertise() {
+        return field;
     }
 
-    public void setExpertise(Expertise expertise) {
-        this.expertise = expertise;
+    public void setExpertise(Field field) {
+        this.field = field;
     }
 
     public Integer getCp() {
@@ -95,11 +97,11 @@ public class Course {
     }
 
     public Semester getWsss() {
-        return wsss;
+        return semester;
     }
 
     public void setWsss(Semester wsss) {
-        this.wsss = wsss;
+        this.semester = wsss;
     }
 
     public String getDescription() {

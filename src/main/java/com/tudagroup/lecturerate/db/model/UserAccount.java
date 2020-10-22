@@ -1,28 +1,34 @@
 package com.tudagroup.lecturerate.db.model;
 
+import jdk.jfr.Timestamp;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
-import java.util.List;
+import java.util.Date;
 
 @Entity
 @Table(name="UserAccount")
 public class UserAccount implements UserDetails{
     @Id
     @NotBlank
+    @NotNull
     private String email;
     @NotBlank
+    @NotNull
     private String password;
     @NotBlank
+    @NotNull
     private String name;
-    private Short semester;
+    @CreationTimestamp
+    private Date start_year;
     private Degree degree;
     @ManyToOne
-    @JoinColumn(name = "facultyID")
-    private Faculty faculty; // Fachgebiet
+    @JoinColumn(name = "field_id")
+    private Field field; // Fachgebiet
 
     public String getEmail() {
         return email;
@@ -78,20 +84,20 @@ public class UserAccount implements UserDetails{
         this.name = name;
     }
 
-    public Short getSemester() {
-        return semester;
+    public Date getStart_year() {
+        return start_year;
     }
 
-    public void setSemester(Short semester) {
-        this.semester = semester;
+    public void setStart_year(Date start_year) {
+        this.start_year = start_year;
     }
 
-    public Faculty getFaculty() {
-        return faculty;
+    public Field getField() {
+        return field;
     }
 
-    public void setFaculty(Faculty faculty) {
-        this.faculty = faculty;
+    public void setField(Field field) {
+        this.field = field;
     }
 
     public Degree getDegree() {

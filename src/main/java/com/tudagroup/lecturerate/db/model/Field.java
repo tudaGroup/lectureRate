@@ -1,23 +1,20 @@
 package com.tudagroup.lecturerate.db.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
 @Entity
-@Table(name="Faculty")
-public class Faculty {
+public class Field {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long facultyID;
-    @NotBlank
+    private Integer id;
     private String name;
 
-    public Long getFacultyID() {
-        return facultyID;
+    public void setId(Integer expertiseID) {
+        this.id = expertiseID;
     }
 
-    public void setFacultyID(Long facultyID) {
-        this.facultyID = facultyID;
+    public Integer getId() {
+        return id;
     }
 
     public String getName() {
