@@ -10,7 +10,6 @@ public class Course {
     @NotBlank
     private String id;
     @NotBlank
-    @NotNull
     private String name;
     @NotNull
     private Boolean available;

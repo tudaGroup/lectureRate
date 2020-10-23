@@ -10,7 +10,6 @@ public class Professor {
     @GeneratedValue( strategy = GenerationType.AUTO)
     private Long id;
     @NotBlank
-    @NotNull
     private String name;
 
     public void setProfID(Long profID) {

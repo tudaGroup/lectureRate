@@ -4,6 +4,9 @@ import com.tudagroup.lecturerate.db.model.UserAccount;
 import com.tudagroup.lecturerate.db.repository.UserAccountRepository;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -44,5 +47,30 @@ public class UserAccountService {
             return;
         }
         userAccountRepository.save(userAccount);
+    }
+
+    @PostConstruct
+    public void populateTestData(){
+        UserAccount userAccount1 = new UserAccount();
+        userAccount1.setEmail("test1@test.test");
+        userAccount1.setName("Test1");
+        userAccount1.setPassword("testpassword");
+        SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            userAccount1.setStart_year(dateformat.parse("15/04/2018"));
+        } catch (ParseException e) {
+
+        }
+        UserAccount userAccount2 = new UserAccount();
+        userAccount2.setEmail("test1@test.test");
+        userAccount2.setName("Test1");
+        userAccount2.setPassword("testpassword");
+        try {
+            userAccount2.setStart_year(dateformat.parse("09/11/2016"));
+        } catch (ParseException e) {
+
+        }
+        addUser(userAccount1);
+        addUser(userAccount2);
     }
 }

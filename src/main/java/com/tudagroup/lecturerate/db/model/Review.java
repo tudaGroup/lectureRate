@@ -3,7 +3,6 @@ package com.tudagroup.lecturerate.db.model;
 import javax.persistence.*;
 
 @Entity
-@IdClass(ReviewId.class)
 public class Review {
     @EmbeddedId
     private ReviewId id;

@@ -1,6 +1,5 @@
 package com.tudagroup.lecturerate.db.model;
 
-import jdk.jfr.Timestamp;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,7 +24,6 @@ public class UserAccount implements UserDetails{
     private String name;
     @CreationTimestamp
     private Date start_year;
-    private Degree degree;
     @ManyToOne
     @JoinColumn(name = "field_id")
     private Field field; // Fachgebiet
@@ -98,13 +96,5 @@ public class UserAccount implements UserDetails{
 
     public void setField(Field field) {
         this.field = field;
-    }
-
-    public Degree getDegree() {
-        return degree;
-    }
-
-    public void setDegree(Degree degree) {
-        this.degree = degree;
     }
 }
