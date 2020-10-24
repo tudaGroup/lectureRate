@@ -1,54 +1,65 @@
 package com.tudagroup.lecturerate.db.model;
 
+import org.apache.catalina.User;
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class Review {
-    @EmbeddedId
-    private ReviewId id;
-    private Short orating;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @ManyToOne
+    private UserAccount userAccount;
+    @ManyToOne
+    private Course course;
+    @CreationTimestamp
+    private Date createdAt;
+    private Short rating;
     private String comment;
-    private Short presentation;
-    private Short support;
-    private Short practicality;
     private Short workload;
     private Short difficulty;
-    private Short grades;
-    private Short exercises;
-    private Short material;
 
-    public void setId(ReviewId id) {
-        this.id = id;
-    }
-
-    public ReviewId getId() {
+    public Long getId() {
         return id;
     }
 
-    @Transient
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public UserAccount getUserAccount() {
-        return getId().getUserAccount();
+        return userAccount;
     }
 
-    public void setUserAccount(UserAccount user) {
-        getId().setUserAccount(user);
+    public void setUserAccount(UserAccount userAccount) {
+        this.userAccount = userAccount;
     }
 
-    @Transient
     public Course getCourse() {
-        return getId().getCourse();
+        return course;
     }
 
     public void setCourse(Course course) {
-        getId().setCourse(course);
+        this.course = course;
     }
 
-    public Short getOrating() {
-        return orating;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setOrating(Short orating) {
-        this.orating = orating;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Short getRating() {
+        return rating;
+    }
+
+    public void setRating(Short orating) {
+        this.rating = orating;
     }
 
     public String getComment() {
@@ -57,30 +68,6 @@ public class Review {
 
     public void setComment(String comment) {
         this.comment = comment;
-    }
-
-    public Short getPresentation() {
-        return presentation;
-    }
-
-    public void setPresentation(Short presentation) {
-        this.presentation = presentation;
-    }
-
-    public Short getSupport() {
-        return support;
-    }
-
-    public void setSupport(Short support) {
-        this.support = support;
-    }
-
-    public Short getPracticality() {
-        return practicality;
-    }
-
-    public void setPracticality(Short practicality) {
-        this.practicality = practicality;
     }
 
     public Short getWorkload() {
@@ -97,29 +84,5 @@ public class Review {
 
     public void setDifficulty(Short difficulty) {
         this.difficulty = difficulty;
-    }
-
-    public Short getGrades() {
-        return grades;
-    }
-
-    public void setGrades(Short grades) {
-        this.grades = grades;
-    }
-
-    public Short getExercises() {
-        return exercises;
-    }
-
-    public void setExercises(Short exercises) {
-        this.exercises = exercises;
-    }
-
-    public Short getMaterial() {
-        return material;
-    }
-
-    public void setMaterial(Short material) {
-        this.material = material;
     }
 }

@@ -10,9 +10,10 @@ import java.util.Collection;
 import java.util.Date;
 
 @Entity
-@Table(name="UserAccount")
 public class UserAccount implements UserDetails{
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     @NotBlank
     @NotNull
     private String email;
@@ -22,11 +23,27 @@ public class UserAccount implements UserDetails{
     @NotBlank
     @NotNull
     private String name;
-    @CreationTimestamp
     private Date start_year;
-    @ManyToOne
-    @JoinColumn(name = "field_id")
-    private Field field; // Fachgebiet
+    private String category; // Fachgebiet
+
+    public UserAccount(Long id, @NotBlank @NotNull String email, @NotBlank @NotNull String password, @NotBlank @NotNull String name, Date start_year, String category) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.start_year = start_year;
+        this.category = category;
+    }
+
+    public UserAccount() {}
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getEmail() {
         return email;
@@ -90,11 +107,11 @@ public class UserAccount implements UserDetails{
         this.start_year = start_year;
     }
 
-    public Field getField() {
-        return field;
+    public String getCategory() {
+        return category;
     }
 
-    public void setField(Field field) {
-        this.field = field;
+    public void setCategory(String field) {
+        this.category = field;
     }
 }

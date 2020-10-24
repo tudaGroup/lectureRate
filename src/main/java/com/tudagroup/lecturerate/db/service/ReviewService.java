@@ -2,13 +2,11 @@ package com.tudagroup.lecturerate.db.service;
 
 import com.tudagroup.lecturerate.db.model.Course;
 import com.tudagroup.lecturerate.db.model.Review;
-import com.tudagroup.lecturerate.db.model.ReviewId;
 import com.tudagroup.lecturerate.db.model.UserAccount;
 import com.tudagroup.lecturerate.db.repository.ReviewRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,10 +17,6 @@ public class ReviewService {
 
     public ReviewService(ReviewRepository reviewRepository) {
         this.reviewRepository = reviewRepository;
-    }
-
-    public Optional<Review> findByReviewId(ReviewId reviewId) {
-        return reviewRepository.findByReviewId(reviewId);
     }
 
     public List<Review> findByUserAccount(UserAccount userAccount) {

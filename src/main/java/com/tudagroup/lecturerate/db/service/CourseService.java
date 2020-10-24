@@ -1,7 +1,6 @@
 package com.tudagroup.lecturerate.db.service;
 
 import com.tudagroup.lecturerate.db.model.Course;
-import com.tudagroup.lecturerate.db.model.Field;
 import com.tudagroup.lecturerate.db.model.Professor;
 import com.tudagroup.lecturerate.db.model.Semester;
 import com.tudagroup.lecturerate.db.repository.CourseRepository;
@@ -39,10 +38,6 @@ public class CourseService {
 
     public List<Course> findByProfessor(Professor professor) {
         return courseRepository.findByProfessor(professor);
-    }
-
-    public List<Course> findByField(Field field) {
-        return courseRepository.findByField(field);
     }
 
     public List<Course> findBySemester(Semester semester) {

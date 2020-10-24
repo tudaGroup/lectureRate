@@ -3,6 +3,7 @@ package com.tudagroup.lecturerate.db.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 public class Course {
@@ -12,30 +13,28 @@ public class Course {
     @NotBlank
     private String name;
     @NotNull
-    private Boolean available;
+    private Boolean offered_this_semester;
+    private String courseType;
     private String category;
-    @ManyToOne
-    @JoinColumn(name = "professor_id")
-    private Professor professor;
-    @ManyToOne
-    @JoinColumn(name = "field_id")
-    private Field field;
+    @ManyToMany
+    @JoinTable(name = "COURSE_PROFESSORS", joinColumns = @JoinColumn(name = "PROFESSOR_ID"), inverseJoinColumns = @JoinColumn(name = "COURSE_ID"))
+    private List<Professor> professors;
     private Integer cp;
     @Enumerated(EnumType.ORDINAL)
-    private Semester semester;
+    private Semester turnus;
     private String description;
 
     public Course(){}
 
-    public Course(String id, String name, Boolean available, String category, Professor professor, Field field, Integer cp, Semester wsss, String description) {
-        id = id;
+    public Course(String id, @NotBlank String name, Boolean offered_this_semester, String courseType, String category, List<Professor> professors, Integer cp, Semester turnus, String description) {
+        this.id = id;
         this.name = name;
-        this.available = available;
+        this.offered_this_semester = offered_this_semester;
+        this.courseType = courseType;
         this.category = category;
-        this.professor = professor;
-        this.field = field;
+        this.professors = professors;
         this.cp = cp;
-        this.semester = wsss;
+        this.turnus = turnus;
         this.description = description;
     }
 
@@ -55,12 +54,20 @@ public class Course {
         this.name = name;
     }
 
-    public Boolean getAvailable() {
-        return available;
+    public Boolean getOffered_this_semester() {
+        return offered_this_semester;
     }
 
-    public void setAvailable(Boolean available) {
-        this.available = available;
+    public void setOffered_this_semester(Boolean offered_this_semester) {
+        this.offered_this_semester = offered_this_semester;
+    }
+
+    public String getCourseType() {
+        return courseType;
+    }
+
+    public void setCourseType(String courseType) {
+        this.courseType = courseType;
     }
 
     public String getCategory() {
@@ -71,22 +78,13 @@ public class Course {
         this.category = category;
     }
 
-    public Professor getProfessor() {
-        return professor;
+    public List<Professor> getProfessors() {
+        return professors;
     }
 
-    public void setProfessor(Professor professor) {
-        this.professor = professor;
+    public void setProfessors(List<Professor> professor) {
+        this.professors = professor;
     }
-
-    public Field getExpertise() {
-        return field;
-    }
-
-    public void setExpertise(Field field) {
-        this.field = field;
-    }
-
     public Integer getCp() {
         return cp;
     }
@@ -96,11 +94,11 @@ public class Course {
     }
 
     public Semester getWsss() {
-        return semester;
+        return turnus;
     }
 
     public void setWsss(Semester wsss) {
-        this.semester = wsss;
+        this.turnus = wsss;
     }
 
     public String getDescription() {

@@ -3,14 +3,17 @@ package com.tudagroup.lecturerate.db.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 public class Professor {
     @Id
-    @GeneratedValue( strategy = GenerationType.AUTO)
+    @GeneratedValue( strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
     private String name;
+    @ManyToMany(mappedBy = "professors")
+    private List<Course> courses;
 
     public void setProfID(Long profID) {
         this.id = profID;

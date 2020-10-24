@@ -12,6 +12,5 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     List<Course> findByAvailable();
     List<Course> findByCategory(String category);
     List<Course> findByProfessor(Professor professor);
-    List<Course> findByField(Field field);
     List<Course> findBySemester(Semester semester);
 }
