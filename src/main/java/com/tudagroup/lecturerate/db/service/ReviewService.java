@@ -27,15 +27,20 @@ public class ReviewService {
         return reviewRepository.findByCourse(course);
     }
 
-    public void addReview(Review review) {
+    public Boolean add(Review review) {
         if(review == null) {
             logger.log(Level.SEVERE, "To be added review is null.");
-            return;
+            return false;
         }
         reviewRepository.save(review);
+        return true;
     }
 
     public void delete(Review review) {
         reviewRepository.delete(review);
+    }
+
+    public Boolean update(Review review) {
+        return reviewRepository.save(review) != null;
     }
 }

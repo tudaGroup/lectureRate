@@ -9,6 +9,7 @@ import java.util.List;
 public class Course {
     @Id
     @NotBlank
+    @Column(unique = true)
     private String id;
     @NotBlank
     private String name;

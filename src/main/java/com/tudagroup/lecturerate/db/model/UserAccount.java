@@ -23,7 +23,6 @@ public class UserAccount implements UserDetails{
     private String password;
     @NotBlank
     @NotNull
-    @Column(unique = true)
     private String name;
     private Date start_year;
     private String category; // Fachgebiet

@@ -30,11 +30,18 @@ public class ProfessorService {
         professorRepository.delete(professor);
     }
 
-    public void addProfessor(Professor professor) {
+    public Boolean add(Professor professor) {
         if(professor == null) {
             logger.log(Level.SEVERE, "To be added professor is null.");
-            return;
+            return false;
         }
+        if(professorRepository.existsById(professor.getProfID()))
+            return false;
         professorRepository.save(professor);
+        return true;
+    }
+
+    public Boolean update(Professor professor) {
+        return professorRepository.save(professor) != null;
     }
 }

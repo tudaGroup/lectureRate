@@ -37,16 +37,33 @@ public class UserAccountService {
         return userAccountRepository.findByEmailOrName(email, name);
     }
 
-    public void deleteUser(UserAccount userAccount) {
+    public void delete(UserAccount userAccount) {
         userAccountRepository.delete(userAccount);
     }
 
-    public void addUser(UserAccount userAccount) {
+    /**
+     *
+     * @param userAccount user account to be added. id needs to be null.
+     * @return true if successfully added, false otherwise
+     */
+    public Boolean add(UserAccount userAccount) {
         if(userAccount == null) {
             log.log(Level.SEVERE, "To be added user is null.");
-            return;
+            return false;
         }
+        if(findByEmail(userAccount.getEmail()).isPresent())
+            return false;
         userAccountRepository.save(userAccount);
+        return true;
+    }
+
+    /**
+     *
+     * @param user UserAccount instance that has updated fields
+     * @return true if process was successful
+     */
+    public Boolean update(UserAccount user) {
+        return userAccountRepository.save(user) != null;
     }
 
     @PostConstruct
@@ -70,7 +87,13 @@ public class UserAccountService {
         } catch (ParseException e) {
 
         }
-        addUser(userAccount1);
-        addUser(userAccount2);
+        System.out.println("Added: " + add(userAccount1));
+        System.out.println("Added: " + add(userAccount2));
+        UserAccount updated = findByEmail("test2@test.test").get();
+        updated.setName("Test2Update");
+        update(updated);
+        updated = findByEmail("test1@test.test").get();
+        updated.setName("Test1Update");
+        update(updated);
     }
 }

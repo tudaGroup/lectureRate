@@ -37,7 +37,7 @@ public class CourseService {
         return courseRepository.findByCategory(category);
     }
 
-    public List<Course> findByProfessor(Professor professor) {
+    public List<Course> findByProfessors(Professor professor) {
         return courseRepository.findByProfessors(professor);
     }
 
@@ -45,15 +45,23 @@ public class CourseService {
         return courseRepository.findByTurnus(semester);
     }
 
-    public void addCourse(Course course) {
+    public Boolean add(Course course) {
         if(course == null) {
             logger.log(Level.SEVERE, "To be added course is null.");
-            return;
+            return false;
         }
+        if(course.getID() != null)
+            if(findById(course.getID()).isPresent())
+                return false;
         courseRepository.save(course);
+        return true;
     }
 
     public void delete(Course course) {
         courseRepository.delete(course);
+    }
+
+    public Boolean update(Course course) {
+        return courseRepository.save(course) != null;
     }
 }
