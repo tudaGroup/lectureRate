@@ -28,7 +28,7 @@ public class ReviewService {
     }
 
     public Boolean add(Review review) {
-        if(review == null) {
+        if (review == null) {
             logger.log(Level.SEVERE, "To be added review is null.");
             return false;
         }

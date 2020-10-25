@@ -22,7 +22,7 @@ public class UserAccountService {
     }
 
     public List<UserAccount> findAll() {
-        return  userAccountRepository.findAll();
+        return userAccountRepository.findAll();
     }
 
     public Optional<UserAccount> findByEmail(String email) {
@@ -42,25 +42,22 @@ public class UserAccountService {
     }
 
     /**
-     *
      * @param userAccount user account to be added. id needs to be null.
      * @return true if successfully added, false otherwise
      */
     public Boolean add(UserAccount userAccount) {
-        if(userAccount == null) {
+        if (userAccount == null) {
             log.log(Level.SEVERE, "To be added user is null.");
             return false;
         }
-        if(findByEmail(userAccount.getEmail()).isPresent())
+        if (findByEmail(userAccount.getEmail()).isPresent())
             return false;
         userAccountRepository.save(userAccount);
         return true;
     }
 
     /**
-     *
      * @param user UserAccount instance that has updated fields
-     * @return true if process was successful
      */
     public void update(UserAccount user) {
         userAccountRepository.save(user);

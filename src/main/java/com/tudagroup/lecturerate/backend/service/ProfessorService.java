@@ -31,11 +31,11 @@ public class ProfessorService {
     }
 
     public Boolean add(Professor professor) {
-        if(professor == null) {
+        if (professor == null) {
             logger.log(Level.SEVERE, "To be added professor is null.");
             return false;
         }
-        if(professorRepository.existsById(professor.getProfID()))
+        if (professorRepository.existsById(professor.getProfID()))
             return false;
         professorRepository.save(professor);
         return true;

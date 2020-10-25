@@ -31,7 +31,8 @@ public class Course {
     private Semester whenOffered;
     private String description;
 
-    public Course(){}
+    public Course() {
+    }
 
     public Course(String id, String name, Boolean offeredThisSemester, String courseType, String category, List<Professor> professors, Integer creditPoints, Semester whenOffered, String description) {
         this.id = id;
@@ -92,6 +93,7 @@ public class Course {
     public void setProfessors(List<Professor> professor) {
         this.professors = professor;
     }
+
     public Integer getCreditPoints() {
         return creditPoints;
     }

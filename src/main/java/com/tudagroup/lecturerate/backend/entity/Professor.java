@@ -7,7 +7,7 @@ import java.util.List;
 @Entity
 public class Professor {
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
     private String name;

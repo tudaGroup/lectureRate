@@ -29,7 +29,7 @@ public class CourseService {
 
     public List<Course> findAvailableCourses() {
         return courseRepository
-                .findByOfferedThisSemester(true);
+            .findByOfferedThisSemester(true);
     }
 
     public List<Course> findByCategory(String category) {
@@ -45,12 +45,12 @@ public class CourseService {
     }
 
     public Boolean add(Course course) {
-        if(course == null) {
+        if (course == null) {
             logger.log(Level.SEVERE, "To be added course is null.");
             return false;
         }
-        if(course.getID() != null)
-            if(findById(course.getID()).isPresent())
+        if (course.getID() != null)
+            if (findById(course.getID()).isPresent())
                 return false;
         courseRepository.save(course);
         return true;
