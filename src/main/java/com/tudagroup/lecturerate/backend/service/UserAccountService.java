@@ -65,35 +65,4 @@ public class UserAccountService {
     public Boolean update(UserAccount user) {
         return userAccountRepository.save(user) != null;
     }
-
-    @PostConstruct
-    public void populateTestData(){
-        UserAccount userAccount1 = new UserAccount();
-        userAccount1.setEmail("test1@test.test");
-        userAccount1.setName("Test1");
-        userAccount1.setPassword("testpassword");
-        SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
-        try {
-            userAccount1.setStart_year(dateformat.parse("15/04/2018"));
-        } catch (ParseException e) {
-
-        }
-        UserAccount userAccount2 = new UserAccount();
-        userAccount2.setEmail("test2@test.test");
-        userAccount2.setName("Test2");
-        userAccount2.setPassword("testpassword");
-        try {
-            userAccount2.setStart_year(dateformat.parse("09/11/2016"));
-        } catch (ParseException e) {
-
-        }
-        System.out.println("Added: " + add(userAccount1));
-        System.out.println("Added: " + add(userAccount2));
-        UserAccount updated = findByEmail("test2@test.test").get();
-        updated.setName("Test2Update");
-        update(updated);
-        updated = findByEmail("test1@test.test").get();
-        updated.setName("Test1Update");
-        update(updated);
-    }
 }
