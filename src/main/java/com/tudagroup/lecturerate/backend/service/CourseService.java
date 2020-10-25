@@ -1,9 +1,9 @@
-package com.tudagroup.lecturerate.db.service;
+package com.tudagroup.lecturerate.backend.service;
 
-import com.tudagroup.lecturerate.db.model.Course;
-import com.tudagroup.lecturerate.db.model.Professor;
-import com.tudagroup.lecturerate.db.model.Semester;
-import com.tudagroup.lecturerate.db.repository.CourseRepository;
+import com.tudagroup.lecturerate.backend.entity.Course;
+import com.tudagroup.lecturerate.backend.entity.Professor;
+import com.tudagroup.lecturerate.backend.entity.Semester;
+import com.tudagroup.lecturerate.backend.repository.CourseRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

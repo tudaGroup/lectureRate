@@ -1,7 +1,7 @@
-package com.tudagroup.lecturerate.db.service;
+package com.tudagroup.lecturerate.backend.service;
 
-import com.tudagroup.lecturerate.db.model.UserAccount;
-import com.tudagroup.lecturerate.db.repository.UserAccountRepository;
+import com.tudagroup.lecturerate.backend.entity.UserAccount;
+import com.tudagroup.lecturerate.backend.repository.UserAccountRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;

@@ -1,4 +1,4 @@
-package com.tudagroup.lecturerate.db.model;
+package com.tudagroup.lecturerate.backend.entity;
 
 public enum Semester {
     summer,

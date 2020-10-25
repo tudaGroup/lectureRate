@@ -1,6 +1,5 @@
-package com.tudagroup.lecturerate.db.model;
+package com.tudagroup.lecturerate.backend.entity;
 
-import org.apache.catalina.User;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;

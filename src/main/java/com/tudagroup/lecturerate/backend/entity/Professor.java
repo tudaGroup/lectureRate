@@ -1,8 +1,7 @@
-package com.tudagroup.lecturerate.db.model;
+package com.tudagroup.lecturerate.backend.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
