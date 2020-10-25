@@ -7,6 +7,12 @@ import java.util.List;
 
 @Entity
 public class Course {
+    public enum Semester {
+        summer,
+        winter,
+        summer_winter
+    }
+
     @Id
     @NotBlank
     @Column(unique = true)

@@ -2,7 +2,6 @@ package com.tudagroup.lecturerate.backend.service;
 
 import com.tudagroup.lecturerate.backend.entity.Course;
 import com.tudagroup.lecturerate.backend.entity.Professor;
-import com.tudagroup.lecturerate.backend.entity.Semester;
 import com.tudagroup.lecturerate.backend.repository.CourseRepository;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +40,7 @@ public class CourseService {
         return courseRepository.findByProfessors(professor);
     }
 
-    public List<Course> findByTurnus(Semester semester) {
+    public List<Course> findByTurnus(Course.Semester semester) {
         return courseRepository.findByTurnus(semester);
     }
 
