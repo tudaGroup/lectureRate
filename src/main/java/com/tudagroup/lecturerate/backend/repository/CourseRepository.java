@@ -12,5 +12,5 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     List<Course> findByOfferedThisSemester(Boolean thisSemester);
     List<Course> findByCategory(String category);
     List<Course> findByProfessors(Professor professor);
-    List<Course> findByTurnus(Course.Semester turnus);
+    List<Course> findByWhenOffered(Course.Semester whenOffered);
 }

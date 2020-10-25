@@ -57,8 +57,8 @@ public class Review {
         return rating;
     }
 
-    public void setRating(Short orating) {
-        this.rating = orating;
+    public void setRating(Short rating) {
+        this.rating = rating;
     }
 
     public String getComment() {

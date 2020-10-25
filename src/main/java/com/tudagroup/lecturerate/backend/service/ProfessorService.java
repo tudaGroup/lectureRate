@@ -41,7 +41,7 @@ public class ProfessorService {
         return true;
     }
 
-    public Boolean update(Professor professor) {
-        return professorRepository.save(professor) != null;
+    public void update(Professor professor) {
+        professorRepository.save(professor);
     }
 }

@@ -40,7 +40,7 @@ public class ReviewService {
         reviewRepository.delete(review);
     }
 
-    public Boolean update(Review review) {
-        return reviewRepository.save(review) != null;
+    public void update(Review review) {
+        reviewRepository.save(review);
     }
 }

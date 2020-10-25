@@ -4,35 +4,31 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Date;
 
 @Entity
-public class UserAccount implements UserDetails{
+public class UserAccount implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @NotBlank
-    @NotNull
     @Column(unique = true)
     private String email;
     @NotBlank
-    @NotNull
     private String password;
     @NotBlank
-    @NotNull
     private String name;
-    private Date start_year;
-    private String category; // Fachgebiet
+    private Date startYear;
+    private String fieldOfStudy;
 
-    public UserAccount(Long id, @NotBlank @NotNull String email, @NotBlank @NotNull String password, @NotBlank @NotNull String name, Date start_year, String category) {
+    public UserAccount(Long id, String email, String password, String name, Date startYear, String fieldOfStudy) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
-        this.start_year = start_year;
-        this.category = category;
+        this.startYear = startYear;
+        this.fieldOfStudy = fieldOfStudy;
     }
 
     public UserAccount() {}
@@ -99,19 +95,19 @@ public class UserAccount implements UserDetails{
         this.name = name;
     }
 
-    public Date getStart_year() {
-        return start_year;
+    public Date getStartYear() {
+        return startYear;
     }
 
-    public void setStart_year(Date start_year) {
-        this.start_year = start_year;
+    public void setStartYear(Date startYear) {
+        this.startYear = startYear;
     }
 
-    public String getCategory() {
-        return category;
+    public String getFieldOfStudy() {
+        return fieldOfStudy;
     }
 
-    public void setCategory(String field) {
-        this.category = field;
+    public void setFieldOfStudy(String fieldOfStudy) {
+        this.fieldOfStudy = fieldOfStudy;
     }
 }

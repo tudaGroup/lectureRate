@@ -62,7 +62,7 @@ public class UserAccountService {
      * @param user UserAccount instance that has updated fields
      * @return true if process was successful
      */
-    public Boolean update(UserAccount user) {
-        return userAccountRepository.save(user) != null;
+    public void update(UserAccount user) {
+        userAccountRepository.save(user);
     }
 }

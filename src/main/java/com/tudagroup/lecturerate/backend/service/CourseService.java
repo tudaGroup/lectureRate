@@ -40,8 +40,8 @@ public class CourseService {
         return courseRepository.findByProfessors(professor);
     }
 
-    public List<Course> findByTurnus(Course.Semester semester) {
-        return courseRepository.findByTurnus(semester);
+    public List<Course> findByWhenOffered(Course.Semester whenOffered) {
+        return courseRepository.findByWhenOffered(whenOffered);
     }
 
     public Boolean add(Course course) {
@@ -60,7 +60,7 @@ public class CourseService {
         courseRepository.delete(course);
     }
 
-    public Boolean update(Course course) {
-        return courseRepository.save(course) != null;
+    public void update(Course course) {
+        courseRepository.save(course);
     }
 }

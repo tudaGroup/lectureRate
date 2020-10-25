@@ -26,22 +26,22 @@ public class Course {
     @ManyToMany
     @JoinTable(name = "COURSE_PROFESSORS", joinColumns = @JoinColumn(name = "PROFESSOR_ID"), inverseJoinColumns = @JoinColumn(name = "COURSE_ID"))
     private List<Professor> professors;
-    private Integer cp;
+    private Integer creditPoints;
     @Enumerated(EnumType.ORDINAL)
-    private Semester turnus;
+    private Semester whenOffered;
     private String description;
 
     public Course(){}
 
-    public Course(String id, @NotBlank String name, Boolean offeredThisSemester, String courseType, String category, List<Professor> professors, Integer cp, Semester turnus, String description) {
+    public Course(String id, String name, Boolean offeredThisSemester, String courseType, String category, List<Professor> professors, Integer creditPoints, Semester whenOffered, String description) {
         this.id = id;
         this.name = name;
         this.offeredThisSemester = offeredThisSemester;
         this.courseType = courseType;
         this.category = category;
         this.professors = professors;
-        this.cp = cp;
-        this.turnus = turnus;
+        this.creditPoints = creditPoints;
+        this.whenOffered = whenOffered;
         this.description = description;
     }
 
@@ -49,8 +49,8 @@ public class Course {
         return id;
     }
 
-    public void setID(String ID) {
-        this.id = ID;
+    public void setID(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -65,8 +65,8 @@ public class Course {
         return offeredThisSemester;
     }
 
-    public void setOfferedThisSemester(Boolean offered_this_semester) {
-        this.offeredThisSemester = offered_this_semester;
+    public void setOfferedThisSemester(Boolean offeredThisSemester) {
+        this.offeredThisSemester = offeredThisSemester;
     }
 
     public String getCourseType() {
@@ -92,20 +92,20 @@ public class Course {
     public void setProfessors(List<Professor> professor) {
         this.professors = professor;
     }
-    public Integer getCp() {
-        return cp;
+    public Integer getCreditPoints() {
+        return creditPoints;
     }
 
-    public void setCp(Integer cp) {
-        this.cp = cp;
+    public void setCreditPoints(Integer creditPoints) {
+        this.creditPoints = creditPoints;
     }
 
-    public Semester getWsss() {
-        return turnus;
+    public Semester getWhenOffered() {
+        return whenOffered;
     }
 
-    public void setWsss(Semester wsss) {
-        this.turnus = wsss;
+    public void setWhenOffered(Semester whenOffered) {
+        this.whenOffered = whenOffered;
     }
 
     public String getDescription() {

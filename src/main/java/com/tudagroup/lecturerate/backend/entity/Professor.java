@@ -14,8 +14,8 @@ public class Professor {
     @ManyToMany(mappedBy = "professors")
     private List<Course> courses;
 
-    public void setProfID(Long profID) {
-        this.id = profID;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public long getProfID() {
