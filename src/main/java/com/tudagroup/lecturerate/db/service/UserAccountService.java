@@ -26,7 +26,7 @@ public class UserAccountService {
     }
 
     public Optional<UserAccount> findByEmail(String email) {
-        return userAccountRepository.findbyEmail(email);
+        return userAccountRepository.findByEmail(email);
     }
 
     public Optional<UserAccount> findByName(String name) {
@@ -62,8 +62,8 @@ public class UserAccountService {
 
         }
         UserAccount userAccount2 = new UserAccount();
-        userAccount2.setEmail("test1@test.test");
-        userAccount2.setName("Test1");
+        userAccount2.setEmail("test2@test.test");
+        userAccount2.setName("Test2");
         userAccount2.setPassword("testpassword");
         try {
             userAccount2.setStart_year(dateformat.parse("09/11/2016"));

@@ -13,7 +13,7 @@ public class Course {
     @NotBlank
     private String name;
     @NotNull
-    private Boolean offered_this_semester;
+    private Boolean offeredThisSemester;
     private String courseType;
     private String category;
     @ManyToMany
@@ -26,10 +26,10 @@ public class Course {
 
     public Course(){}
 
-    public Course(String id, @NotBlank String name, Boolean offered_this_semester, String courseType, String category, List<Professor> professors, Integer cp, Semester turnus, String description) {
+    public Course(String id, @NotBlank String name, Boolean offeredThisSemester, String courseType, String category, List<Professor> professors, Integer cp, Semester turnus, String description) {
         this.id = id;
         this.name = name;
-        this.offered_this_semester = offered_this_semester;
+        this.offeredThisSemester = offeredThisSemester;
         this.courseType = courseType;
         this.category = category;
         this.professors = professors;
@@ -54,12 +54,12 @@ public class Course {
         this.name = name;
     }
 
-    public Boolean getOffered_this_semester() {
-        return offered_this_semester;
+    public Boolean getOfferedThisSemester() {
+        return offeredThisSemester;
     }
 
-    public void setOffered_this_semester(Boolean offered_this_semester) {
-        this.offered_this_semester = offered_this_semester;
+    public void setOfferedThisSemester(Boolean offered_this_semester) {
+        this.offeredThisSemester = offered_this_semester;
     }
 
     public String getCourseType() {

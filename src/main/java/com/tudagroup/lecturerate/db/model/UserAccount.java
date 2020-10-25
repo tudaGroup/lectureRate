@@ -16,12 +16,14 @@ public class UserAccount implements UserDetails{
     private Long id;
     @NotBlank
     @NotNull
+    @Column(unique = true)
     private String email;
     @NotBlank
     @NotNull
     private String password;
     @NotBlank
     @NotNull
+    @Column(unique = true)
     private String name;
     private Date start_year;
     private String category; // Fachgebiet

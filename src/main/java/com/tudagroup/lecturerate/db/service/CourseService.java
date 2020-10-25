@@ -29,7 +29,8 @@ public class CourseService {
     }
 
     public List<Course> findAvailableCourses() {
-        return courseRepository.findByAvailable();
+        return courseRepository
+                .findByOfferedThisSemester(true);
     }
 
     public List<Course> findByCategory(String category) {
@@ -37,11 +38,11 @@ public class CourseService {
     }
 
     public List<Course> findByProfessor(Professor professor) {
-        return courseRepository.findByProfessor(professor);
+        return courseRepository.findByProfessors(professor);
     }
 
-    public List<Course> findBySemester(Semester semester) {
-        return courseRepository.findBySemester(semester);
+    public List<Course> findByTurnus(Semester semester) {
+        return courseRepository.findByTurnus(semester);
     }
 
     public void addCourse(Course course) {
