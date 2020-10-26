@@ -1,4 +1,4 @@
-package com.tudagroup.lecturerate;
+package com.tudagroup.lecturerate.view;
 
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H1;

@@ -1,2 +1,25 @@
+.login-view {
+    background-image: url("img/background.jpg");
+    background-size: cover;
+}
 
+@keyframes slideUp {
+    0% {top: 100%; opacity: 0;}
+    100% {top: 0; opacity: 1;}
+}
+
+.login-form {
+    animation-name: slideUp;
+    animation-duration: 1s;
+    position: relative;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 6px 11px 5px 1px rgba(0,0,0,0.32);
+}
+
+.login-button {
+    font-size: 20px;
+    height: 40px;
+    margin: 30px 0 20px 0;
+}
 
