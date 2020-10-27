@@ -1,12 +1,19 @@
-from tika import parser
-from parser import Parser
-import io
-import re
+from Modulebook.modulebook_scraper import ModulebookScraper
 
 
-file = "../MHB_BSC_MSC_Informatik.pdf"
-raw = parser.from_file(file)
-processed = re.sub(r'Kurs\s*Nr.', r'Kurs Nr.', str(raw["content"]))
-processed = re.sub(r'(?P<prefix>\d\d-\d\d)?\s*-?\s*(?P<suffix>\d\d\d\d-\w)', r'\g<prefix>-\g<suffix>', processed) # preprocess Kurs Nr.
-parser = Parser(processed)
-parser.parse()
+indexes = [
+    (4, 'Pflichtbereich B. Sc. Informatik'),
+    (51, 'Schwerpunkt IT-Sicherheit'),
+    (128, 'Schwerpunkt Netze und verteilte Systeme'),
+    (159, 'Schwerpunkt Robotik, Computational und Computer Engineering'),
+    (186, 'Schwerpunkt Software-Systeme und formale Grundlagen'),
+    (246, 'Schwerpunkt Visual & Interactive Computing'),
+    (298, 'Schwerpunkt Web, Wissens- und Informationsverarbeitung'),
+    (323, 'Seminare'),
+    (526, 'Praktikum in der Lehre'),
+    (589, 'Praktika, Projektpraktika und ähnliche Veranstaltungen'),
+    (778, 'Arbeiten')
+]
+scraper = ModulebookScraper("MHB_BSC_MSC_Informatik.pdf", indexes)
+scraper.scrape()
+scraper.to_json("INFORMATIK_COURSES.json")
