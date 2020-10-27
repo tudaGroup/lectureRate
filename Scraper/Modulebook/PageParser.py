@@ -1,52 +1,15 @@
-from enum import Enum
 import re
-
-
-class Turnus(Enum):
-    WINTER = 0
-    SOMMER = 1
-    BOTH = 2
-    NA = 3
-
-
-class Module:
-    def __init__(self, _id: str, name: str, cp: int, _type: str,
-                 turnus: Turnus, category: str = '', content: str = '', objectives: str = ''):
-        self.id: str = _id
-        self.name: str = name
-        self.cp: int = cp
-        self.type: str = _type
-        self.turnus: Turnus = turnus.value
-        self.category: str = category
-        self.content: str = content
-        self.objectives: str = objectives
-
-    def __str__(self):
-        return f'{self.name}, {self.id}, {self.cp}, {self.type}, {self.turnus}, {self.category}\n\n________' \
-            + f'______________________________\n{self.content}\n\n______________________________________' \
-            + f'{self.objectives}########################################'
-
-    def __repr__(self):
-        return self.__str__()
-
-    def json(self):
-        s = '{\n\t"id": "' + str(self.id) + '",\n\t"name": "' + str(self.name) + '",\n\t"cp": ' + str(self.cp)
-        s += ',\n\t"type": "' + str(self.type) + '",\n\t"turnus": ' + str(self.turnus)
-        s += ',\n\t"category": "' + str(self.category) + '",\n\t"content": "'
-        if self.content:
-            for line in self.content.splitlines():
-                s += re.sub(r'"', r'\"', line) + r'\n'
-        s += '",\n\t"objectives": "'
-        if self.objectives:
-            for line in self.objectives.splitlines():
-                s += re.sub(r'"', r'\"', line) + r"\n"
-        s += '"\n}'
-        return s
+from Modulebook.module import Module, Turnus
 
 
 class PageParser:
+    """
+    Class that compiles all regexes prehand for performance and then extracts module information from a string.
+
+    :param to_be_ignored: tokens that should be ignored
+    """
     def __init__(self, to_be_ignored: list = []):
-        self.to_be_ignored = to_be_ignored
+        self.to_be_ignored = [(re.compile(regex[0]), regex[1]) for regex in to_be_ignored]
         self.blank_pattern = re.compile(r'^(?![\s\S])')
         self.course_id_pattern = re.compile(r'(?P<id>\d\d\s*-\s*\w\w\s*-\s*\d\d\d\d)(\s*-\s*(?P<type>\w\w))?')
         self.cp_pattern = re.compile(r'(\d+)\s*CP')
@@ -82,6 +45,12 @@ class PageParser:
         }
 
     def process_one_line_str(self, string):
+        """
+        Process one line string such as name of the module
+
+        :param string: string to be processed
+        :return: processed string
+        """
         string = re.sub('\n', '', string.strip())
         slashand = self.remove_1.search(string)
         if slashand and slashand.group(1):
@@ -89,8 +58,14 @@ class PageParser:
         return self.remove_1.sub("-", string)
 
     def parse(self, page_pypdf):
+        """
+        Extract a module from PDF pages
+
+        :param page_pypdf: pdf page where module information should be extracted
+        :return: module extracted from pdf page
+        """
         name = self.parse_name(page_pypdf)
-        cp = self.parse_cp(page_pypdf)
+        cp: int = self.parse_cp(page_pypdf)
         turnus = self.parse_turnus(page_pypdf)
         _id, _type = self.parse_course_nr(page_pypdf)
         category = self.parse_category(page_pypdf)
@@ -99,21 +74,39 @@ class PageParser:
         return Module(_id, name, cp, _type, turnus, category, content, objectives)
 
     def parse_name(self, page):
+        """
+        Parse the name of the module on the page
+
+        :param page: page to be searched on
+        :return: name of the module
+        """
         res = self.module_name_flag.search(page)
         if res:
             m_name_start = res.span()[1]
             m_name_end = self.module_nr_flag.search(page, m_name_start).span()[0]
             string = page[m_name_start: m_name_end]
-            return re.sub('\n', '', self.process_one_line_str(string))
+            return re.sub(r'\n', '', self.process_one_line_str(string))
         return None
 
     def parse_cp(self, page):
+        """
+        Parse credit points of module
+
+        :param page:
+        :return: credit points of the module
+        """
         res = self.cp_pattern.search(page)
         if res:
             return res.group(1)
-        return None
+        return -1
 
     def parse_turnus(self, page):
+        """
+        Parse in which half of a year the module is offered(refer to Turnus Enum)
+
+        :param page:
+        :return: turnus of the module
+        """
         res = self.turnus_flag.search(page)
         if res:
             turnus_start = res.span()[1]
@@ -135,6 +128,12 @@ class PageParser:
         return None
 
     def parse_course_nr(self, page):
+        """
+        Parse the course number of the module
+
+        :param page:
+        :return: course number of the module
+        """
         res = self.course_id_pattern.search(page)
         if res:
             res2 = self.course_id_pattern.search(page, res.span()[1])
@@ -147,28 +146,58 @@ class PageParser:
         res = self.course_id_pattern.search(page, 0)
         return res.group('id')
 
-    def parse_category(self):
-        pass
+    def parse_category(self, page):
+        """
+        Parse the category of module. This method is not implemented and should be overwritten if
+        categories should be parsed.
+
+        :param page:
+        :return: category of the module
+        """
+        return ''
 
     def parse_content(self, page):
+        """
+        Parse the content description of the module
+
+        :param page:
+        :return: content description of the module
+        """
         res = self.content_flag.search(page)
         if res:
             content_start = res.span()[1]
             content_end = self.objectives_flag.search(page, content_start).span()[0]
-            return process_description(page[content_start: content_end]).strip()
+            content = process_description(page[content_start: content_end]).strip()
+            for ignore in self.to_be_ignored:
+                content = ignore[0].sub(ignore[1], content)
+            return content
         return None
 
     def parse_objectives(self, page):
+        """
+        Parse the objectives description of the module
+
+        :param page:
+        :return: objectives description of the module
+        """
         res = self.objectives_flag.search(page)
         if res:
             objectives_start = res.span()[1]
             objectives_end = self.prerequisites_flag.search(page)
             if objectives_end:
                 objectives_end = objectives_end.span()[0]
-                return process_description(page[objectives_start: objectives_end]).strip()
+                objectives = process_description(page[objectives_start: objectives_end]).strip()
+                for ignore in self.to_be_ignored:
+                    objectives = ignore[0].sub(ignore[1], objectives)
+                return objectives
         return None
 
 
 def process_description(description: str):
-    return re.sub(r'([a-zA-Z0-9_,]+)[ \t\r\f\v]*\n[ \t\r\f\v]*([a-zA-Z0-9_,]+)', r'\g<1> \g<2>', description)
+    """
+    Process description strings by removing unnecessary newlines
 
+    :param description:
+    :return: process description string
+    """
+    return re.sub(r'([a-zA-Z0-9_,]+)[ \t\r\f\v]*\n[ \t\r\f\v]*([a-zA-Z0-9_,]+)', r'\g<1> \g<2>', description)

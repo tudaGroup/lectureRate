@@ -14,6 +14,7 @@ indexes = [
     (589, 'Praktika, Projektpraktika und ähnliche Veranstaltungen'),
     (778, 'Arbeiten')
 ]
-scraper = ModulebookScraper("MHB_BSC_MSC_Informatik.pdf", indexes)
+scraper = ModulebookScraper("MHB_BSC_MSC_Informatik.pdf", indexes,
+                            ignore_lst=[(r"\s*Modulhandbuch B. Sc./M. Sc. Informatik\s+\d+\s*", ' ')])
 scraper.scrape()
 scraper.to_json("INFORMATIK_COURSES.json")
