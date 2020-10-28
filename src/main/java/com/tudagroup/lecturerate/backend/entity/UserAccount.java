@@ -1,12 +1,12 @@
 package com.tudagroup.lecturerate.backend.entity;
 
+import net.bytebuddy.implementation.bind.annotation.Default;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
-import java.util.Date;
 
 @Entity
 public class UserAccount implements UserDetails {
@@ -19,16 +19,16 @@ public class UserAccount implements UserDetails {
     @NotBlank
     private String password;
     @NotBlank
-    private String name;
-    private Date startYear;
+    private String username;
+    private int enrollmentYear;
     private String fieldOfStudy;
 
-    public UserAccount(Long id, String email, String password, String name, Date startYear, String fieldOfStudy) {
+    public UserAccount(Long id, String email, String password, String username, int enrollmentYear, String fieldOfStudy) {
         this.id = id;
         this.email = email;
         this.password = password;
-        this.name = name;
-        this.startYear = startYear;
+        this.username = username;
+        this.enrollmentYear = enrollmentYear;
         this.fieldOfStudy = fieldOfStudy;
     }
 
@@ -61,11 +61,6 @@ public class UserAccount implements UserDetails {
     }
 
     @Override
-    public String getUsername() {
-        return name;
-    }
-
-    @Override
     public boolean isAccountNonExpired() {
         return true;
     }
@@ -89,20 +84,20 @@ public class UserAccount implements UserDetails {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public Date getStartYear() {
-        return startYear;
+    public int getEnrollmentYear() {
+        return enrollmentYear;
     }
 
-    public void setStartYear(Date startYear) {
-        this.startYear = startYear;
+    public void setEnrollmentYear(int enrollmentYear) {
+        this.enrollmentYear = enrollmentYear;
     }
 
     public String getFieldOfStudy() {

@@ -1,6 +1,7 @@
-package com.tudagroup.lecturerate.view;
+package com.tudagroup.lecturerate.ui;
 
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
@@ -17,7 +18,8 @@ public class MainView extends VerticalLayout {
 
 
     public MainView() {
-        add(new H1("Main Page"));
+        Anchor logout = new Anchor("logout", "Logout");
+        add(logout, new H1("Main Page"));
     }
 
 }

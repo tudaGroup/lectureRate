@@ -1,4 +1,4 @@
-package com.tudagroup.lecturerate.view.login;
+package com.tudagroup.lecturerate.ui.views.login;
 
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H1;

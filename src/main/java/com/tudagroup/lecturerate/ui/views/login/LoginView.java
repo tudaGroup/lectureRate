@@ -1,4 +1,4 @@
-package com.tudagroup.lecturerate.view.login;
+package com.tudagroup.lecturerate.ui.views.login;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -9,11 +9,12 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.dom.Element;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 
-@Route("login2")
+@Route("login")
 @PageTitle("Login | LectureRate")
 @CssImport("./styles/shared-styles.css")
 public class LoginView extends VerticalLayout {
@@ -31,7 +32,7 @@ public class LoginView extends VerticalLayout {
 
         H1 heading = new H1("LectureRate");
         loginForm.setAlignSelf(Alignment.CENTER, heading);
-        TextField usernameOrEmail = new TextField("Username oder TU-Email");
+        TextField usernameOrEmail = new TextField("Anmeldename oder TU-Email");
         PasswordField password = new PasswordField("Passwort");
         Button loginButton = new Button("Login");
         loginButton.addClassName("login-button");
@@ -43,7 +44,6 @@ public class LoginView extends VerticalLayout {
         links.setJustifyContentMode(JustifyContentMode.EVENLY);
 
         loginForm.add(heading, new Hr(), usernameOrEmail, password, loginButton, links);
-
         add(loginForm);
     }
 }
