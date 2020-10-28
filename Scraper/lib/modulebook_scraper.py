@@ -1,5 +1,5 @@
 import re
-from Modulebook.PageParser import PageParser
+from lib.PageParser import PageParser
 import slate3k as slate
 import io
 
@@ -36,6 +36,7 @@ class ModulebookScraper:
                     page = self.pages[page_num]
                     curr_page += page
                 self.modules.append(self.parser.parse(curr_page))
+        return self.modules
 
     def to_json(self, file_path):
         """

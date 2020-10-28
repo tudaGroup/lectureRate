@@ -1,5 +1,5 @@
 import re
-from Modulebook.module import Module, Turnus
+from lib.module import Module, Turnus
 
 
 class PageParser:
@@ -170,7 +170,7 @@ class PageParser:
             content = process_description(page[content_start: content_end]).strip()
             for ignore in self.to_be_ignored:
                 content = ignore[0].sub(ignore[1], content)
-            return content
+            return content.strip()
         return None
 
     def parse_objectives(self, page):
@@ -189,7 +189,7 @@ class PageParser:
                 objectives = process_description(page[objectives_start: objectives_end]).strip()
                 for ignore in self.to_be_ignored:
                     objectives = ignore[0].sub(ignore[1], objectives)
-                return objectives
+                return objectives.strip()
         return None
 
 
