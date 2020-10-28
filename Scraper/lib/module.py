@@ -42,3 +42,6 @@ class Module:
                 s += re.sub(r'"', r'\"', line) + r"\n"
         s += '"\n}'
         return s
+
+    def insert_into_postgres_db(self):
+        pass
