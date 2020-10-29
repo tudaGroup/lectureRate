@@ -19,6 +19,8 @@ import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.*;
 
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 @Route("register")
@@ -67,12 +69,12 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
             try {
                 binder.writeBean(newUser);
                 boolean successful = userAccountService.register(newUser);
-                if (!successful) {
-                    // Show authentication error
-                    getUI().ifPresent(ui -> ui.getPage().setLocation("register?error"));
-                } else {
+                if (successful) {
                     // Redirect to main page
                     getUI().ifPresent(ui -> ui.getPage().setLocation("main"));
+                } else {
+                    // Show authentication error
+                    getUI().ifPresent(ui -> ui.getPage().setLocation("register?error"));
                 }
             } catch (ValidationException e) {
                 e.printStackTrace();
