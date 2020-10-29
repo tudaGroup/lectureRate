@@ -1,5 +1,6 @@
 package com.tudagroup.lecturerate.security;
 
+import com.tudagroup.lecturerate.ui.views.login.EmailVerification;
 import com.tudagroup.lecturerate.ui.views.login.ForgotPassword;
 import com.tudagroup.lecturerate.ui.views.login.LoginView;
 import com.tudagroup.lecturerate.ui.views.login.RegisterView;
@@ -24,7 +25,8 @@ public class ConfigureUIServiceInitListener implements VaadinServiceInitListener
 		if (!LoginView.class.equals(event.getNavigationTarget())
 			&& !RegisterView.class.equals(event.getNavigationTarget())
 			&& !ForgotPassword.class.equals(event.getNavigationTarget())
-		    && !SecurityUtils.isUserLoggedIn()) { 
+			&& !EmailVerification.class.equals(event.getNavigationTarget())
+		    && !SecurityUtils.isUserLoggedIn()) {
 			event.rerouteTo(LoginView.class);
 		}
 	}
