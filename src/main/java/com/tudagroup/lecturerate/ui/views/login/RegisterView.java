@@ -6,10 +6,9 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Hr;
-import com.vaadin.flow.component.html.Paragraph;
-import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
@@ -17,17 +16,14 @@ import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
-import com.vaadin.flow.data.binder.ValidationResult;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.router.*;
 
 import java.util.Calendar;
 
 @Route("register")
 @PageTitle("Registrieren | LectureRate")
 @CssImport("./styles/shared-styles.css")
-public class RegisterView extends VerticalLayout {
+public class RegisterView extends VerticalLayout implements BeforeEnterObserver {
     //==============
     // Form fields
     //==============
@@ -36,6 +32,8 @@ public class RegisterView extends VerticalLayout {
     PasswordField password  = new PasswordField("Passwort");
     ComboBox<Integer> enrollmentYear = getEnrollmentYearComboBox();
     Button registerButton = new Button("Registrieren");
+
+    Div authErrorMessage = new Div();
 
     public RegisterView(UserAccountService userAccountService) {
         addClassName("login-view");
@@ -67,7 +65,12 @@ public class RegisterView extends VerticalLayout {
         registerButton.addClickListener(click -> {
             try {
                 binder.writeBean(newUser);
-                userAccountService.register(newUser);
+                boolean successful = userAccountService.register(newUser);
+                if (!successful) {
+                    getUI().ifPresent(ui -> ui.getPage().setLocation("register?error"));
+                } else {
+                    getUI().ifPresent(ui -> ui.getPage().setLocation("main"));
+                }
             } catch (ValidationException e) {
                 e.printStackTrace();
             }
@@ -103,7 +106,13 @@ public class RegisterView extends VerticalLayout {
         HorizontalLayout links = new HorizontalLayout(login, forgotPassword);
         links.setJustifyContentMode(JustifyContentMode.EVENLY);
 
-        registerForm.add(heading, new Hr(), email, username, horizontalLayout,  registerButton, links);
+        // Configure error message for registration failure
+        authErrorMessage.setText("Email oder Nutzername schon vergeben!");
+        authErrorMessage.setClassName("error");
+        authErrorMessage.getElement().getStyle().set("margin", "0 auto");
+        authErrorMessage.setVisible(false);
+
+        registerForm.add(heading, new Hr(), authErrorMessage,email, username, horizontalLayout,  registerButton, links);
         return registerForm;
     }
 
@@ -121,5 +130,18 @@ public class RegisterView extends VerticalLayout {
         ComboBox<Integer> enrollmentYear = new ComboBox<>("Studienbeginn", lastTenYears);
         enrollmentYear.setWidth("50%");
         return enrollmentYear;
+    }
+
+    //===============================================
+    // Inform the user about an authentication error
+    //===============================================
+    @Override
+    public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
+        if (beforeEnterEvent.getLocation()
+            .getQueryParameters()
+            .getParameters()
+            .containsKey("error")) {
+            authErrorMessage.setVisible(true);
+        }
     }
 }

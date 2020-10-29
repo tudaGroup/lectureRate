@@ -1,11 +1,11 @@
 package com.tudagroup.lecturerate.backend.entity;
 
-import net.bytebuddy.implementation.bind.annotation.Default;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
@@ -53,7 +53,10 @@ public class UserAccount implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        GrantedAuthority grantedAuthority = (GrantedAuthority) () -> "ROLE_USER";
+        grantedAuthorities.add(grantedAuthority);
+        return grantedAuthorities;
     }
 
     public String getPassword() {
