@@ -19,6 +19,7 @@ import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.*;
 
 import java.util.Calendar;
+import java.util.regex.Pattern;
 
 @Route("register")
 @PageTitle("Registrieren | LectureRate")
@@ -27,15 +28,16 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
     //==============
     // Form fields
     //==============
-    TextField username = new TextField("Anmeldename"); // the name displayed in the application's frontend
-    EmailField email = new EmailField("TU-Email"); // used for password reset and student status verification
-    PasswordField password  = new PasswordField("Passwort");
+    TextField username = new TextField("Anmeldename"); // The name displayed in the application's frontend
+    EmailField email = new EmailField("TU-Email"); // Used for password reset and student status verification
+    PasswordField password = new PasswordField("Passwort");
     ComboBox<Integer> enrollmentYear = getEnrollmentYearComboBox();
     Button registerButton = new Button("Registrieren");
-
     Div authErrorMessage = new Div();
+    Binder<UserAccount> binder = new Binder<>(UserAccount.class);
 
     public RegisterView(UserAccountService userAccountService) {
+        // Page level styles
         addClassName("login-view");
         setSizeFull();
         setAlignItems(Alignment.CENTER);
@@ -45,30 +47,31 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
         add(registerForm);
 
         // Add data binding and validation
-        Binder<UserAccount> binder = new Binder<>(UserAccount.class);
         binder.forField(username)
-              .asRequired("Bitte gebe einen Nutzernamen an!")
-              .bind("username");
+            .asRequired("Bitte gebe einen Nutzernamen an!")
+            .bind("username");
         binder.forField(email)
-              .asRequired("Bitte gebe deine TU-Email an!")
-              .withValidator(new StudentEmailValidator())
-              .bind("email");
-        binder.forField(password)
-              .asRequired("Bitte gebe ein Passwort ein!")
-              .bind("password");
+            .asRequired("Bitte gebe deine TU-Email an!")
+            .withValidator(new StudentEmailValidator())
+            .bind("email");
         binder.forField(enrollmentYear)
-              .bind("enrollmentYear");
+            .bind("enrollmentYear");
+        addPasswordValidation();
+
         UserAccount newUser = new UserAccount();
-        newUser.setFieldOfStudy("Informatik");
+        newUser.setFieldOfStudy("Informatik"); // Currently the only supported field of study
         binder.readBean(newUser);
 
+        // Register the new user
         registerButton.addClickListener(click -> {
             try {
                 binder.writeBean(newUser);
                 boolean successful = userAccountService.register(newUser);
                 if (!successful) {
+                    // Show authentication error
                     getUI().ifPresent(ui -> ui.getPage().setLocation("register?error"));
                 } else {
+                    // Redirect to main page
                     getUI().ifPresent(ui -> ui.getPage().setLocation("main"));
                 }
             } catch (ValidationException e) {
@@ -112,7 +115,7 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
         authErrorMessage.getElement().getStyle().set("margin", "0 auto");
         authErrorMessage.setVisible(false);
 
-        registerForm.add(heading, new Hr(), authErrorMessage,email, username, horizontalLayout,  registerButton, links);
+        registerForm.add(heading, new Hr(), authErrorMessage, email, username, horizontalLayout, registerButton, links);
         return registerForm;
     }
 
@@ -143,5 +146,29 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
             .containsKey("error")) {
             authErrorMessage.setVisible(true);
         }
+    }
+
+    //=========================================
+    // Checks if the password is strong enough
+    //=========================================
+    private void addPasswordValidation() {
+        Pattern containsLowerCase = Pattern.compile("[a-z]");
+        Pattern containsUpperCase = Pattern.compile("[A-Z]");
+        Pattern containsNumber = Pattern.compile("[0-9]");
+        Pattern containsSpecialChar = Pattern.compile("[^a-z0-9]", Pattern.CASE_INSENSITIVE);
+
+        binder.forField(password)
+            .asRequired("Bitte gebe ein Passwort ein!")
+            .withValidator(password -> password.length() >= 8,
+                "Passwort muss mindestens 8 Zeichen lang sein!")
+            .withValidator(password -> containsLowerCase.matcher(password).find(),
+                "Passwort muss mindestens einen Kleinbuchstaben enthalten!")
+            .withValidator(password -> containsUpperCase.matcher(password).find(),
+                "Passwort muss mindestens einen Großbuchstaben enthalten!")
+            .withValidator(password -> containsNumber.matcher(password).find(),
+                "Passwort muss mindestens eine Zahl enthalten")
+            .withValidator(password -> containsSpecialChar.matcher(password).find(),
+                "Passwort muss mindestens ein Sonderzeichen enthalten!")
+            .bind("password");
     }
 }
