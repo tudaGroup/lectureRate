@@ -18,7 +18,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private static final String LOGOUT_SUCCESS_URL = "/login";
     private static final String REGISTER_URL = "/register";
     private static final String FORGOT_PASSWORD_URL = "/forgot-password";
-    private static final String EMAIL_VERIFICATION_URL = "/verify";
+    private static final String EMAIL_VERIFICATION_URL = "/verify/**";
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

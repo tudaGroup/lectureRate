@@ -22,14 +22,16 @@ public class UserAccount implements UserDetails {
     private String username;
     private int enrollmentYear;
     private String fieldOfStudy;
+    private String verificationCode;
 
-    public UserAccount(Long id, String email, String password, String username, int enrollmentYear, String fieldOfStudy) {
+    public UserAccount(Long id, String email, String password, String username, int enrollmentYear, String fieldOfStudy, String verificationCode) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.username = username;
         this.enrollmentYear = enrollmentYear;
         this.fieldOfStudy = fieldOfStudy;
+        this.verificationCode = verificationCode;
     }
 
     public UserAccount() {
@@ -109,5 +111,13 @@ public class UserAccount implements UserDetails {
 
     public void setFieldOfStudy(String fieldOfStudy) {
         this.fieldOfStudy = fieldOfStudy;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
     }
 }
