@@ -41,7 +41,7 @@ public class EmailVerification extends VerticalLayout implements HasUrlParameter
         HorizontalLayout horizontalLayout = new HorizontalLayout(verificationCode, send);
 
         send.addClickListener(click -> {
-            boolean successful = userAccountService.verifyEmailAddress(verificationCode.getValue(), this.username);
+            boolean successful = userAccountService.verifyEmail(verificationCode.getValue(), this.username);
             if (successful) {
                 // Authenticated, reroute to main page
                 getUI().ifPresent(ui -> ui.getPage().setLocation("main"));

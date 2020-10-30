@@ -2,13 +2,16 @@ package com.tudagroup.lecturerate.backend.service;
 
 import com.tudagroup.lecturerate.backend.entity.UserAccount;
 import com.tudagroup.lecturerate.backend.repository.UserAccountRepository;
-import com.tudagroup.lecturerate.ui.views.login.LoginView;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Optional;
@@ -19,13 +22,18 @@ import java.util.logging.Logger;
 public class UserAccountService {
     private final UserAccountRepository userAccountRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final JavaMailSender mailSender;
     static private final Logger LOGGER = Logger.getLogger(UserAccountService.class.getName());
 
-    public UserAccountService(UserAccountRepository userAccountRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserAccountService(UserAccountRepository userAccountRepository, BCryptPasswordEncoder bCryptPasswordEncoder, JavaMailSender mailSender) {
         this.userAccountRepository = userAccountRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.mailSender = mailSender;
     }
 
+    //=================================================================================================
+    // Saves the user data together with a verification token, if the user doesn't have an account yet
+    //=================================================================================================
     public boolean register(UserAccount newUser) {
         Optional<UserAccount> user = userAccountRepository.findByEmailOrUsername(newUser.getEmail(), newUser.getUsername());
         if (user.isPresent()) {
@@ -36,12 +44,19 @@ public class UserAccountService {
             String hashedPassword = bCryptPasswordEncoder.encode(newUser.getPassword());
             newUser.setPassword(hashedPassword);
 
-            sendVerificationEmail(newUser);
+            try {
+                createVerificationToken(newUser);
+            } catch (MessagingException e) {
+                return false;
+            }
             userAccountRepository.saveAndFlush(newUser);
             return true;
         }
     }
 
+    //================================================================================
+    // Logs the user in by comparing the provided password to the one in the database
+    //================================================================================
     public boolean login(String usernameOrEmail, String password) {
         // Check if user with that email or username exists
         Optional<UserAccount> userDetails = userAccountRepository.findByEmail(usernameOrEmail);
@@ -63,7 +78,10 @@ public class UserAccountService {
         return true;
     }
 
-    public boolean verifyEmailAddress(String verificationCode, String username) {
+    //=====================================================================
+    // Authenticates the user if the provided verification code is correct
+    //=====================================================================
+    public boolean verifyEmail(String verificationCode, String username) {
         // Grab the verification code stored in the database and compare it with the one provided
         Optional<UserAccount> userDetails = userAccountRepository.findByUsername(username);
         if (!userDetails.isPresent()) {
@@ -86,7 +104,10 @@ public class UserAccountService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
-    private void sendVerificationEmail(UserAccount user) {
+    //=============================================================================
+    // Creates a random token and sends it to the user to verify his email address
+    //=============================================================================
+    private void createVerificationToken(UserAccount user) throws MessagingException {
         // Generate random token
         SecureRandom random = new SecureRandom();
         byte[] bytes = new byte[15];
@@ -95,7 +116,14 @@ public class UserAccountService {
         String token = encoder.encodeToString(bytes);
         LOGGER.log(Level.INFO, "Token: " + token);
 
-        // TODO Send token to the provided email
+        // Send token to the provided email
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+        String htmlMsg = EmailMessages.getVerificationEmail(token);
+        helper.setText(htmlMsg, true);
+        helper.setTo(user.getEmail());
+        helper.setSubject("Dein LectureRate Verifizierungscode");
+        mailSender.send(mimeMessage);
 
         // Save the token in the user account
         user.setVerificationCode(token);
