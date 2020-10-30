@@ -24,7 +24,7 @@ public class Course {
     private String courseType;
     private String category;
     @ManyToMany
-    @JoinTable(name = "COURSE_PROFESSORS", joinColumns = @JoinColumn(name = "PROFESSOR_ID"), inverseJoinColumns = @JoinColumn(name = "COURSE_ID"))
+    @JoinTable(name = "COURSE_PROFESSORS", joinColumns = @JoinColumn(name = "COURSE_ID"), inverseJoinColumns = @JoinColumn(name = "PROFESSOR_ID"))
     private List<Professor> professors;
     private Integer creditPoints;
     @Enumerated(EnumType.ORDINAL)

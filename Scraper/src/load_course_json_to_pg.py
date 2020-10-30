@@ -1,9 +1,9 @@
 import json
-from lib.database import CourseDB
+from lib.database import CourseTable
 from lib.module import Module
 import io
 
-course_db = CourseDB(r'../lib/database.ini')
+course_db = CourseTable(r'../lib/database.ini')
 course_db.connect()
 f = io.open('../INFORMATIK_COURSES.json', 'r', encoding='utf-8')
 modules = json.load(f)

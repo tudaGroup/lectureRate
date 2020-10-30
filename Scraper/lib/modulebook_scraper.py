@@ -1,5 +1,5 @@
 import re
-from lib.PageParser import PageParser
+from lib.page_parser import PageParser
 import slate3k as slate
 import io
 
