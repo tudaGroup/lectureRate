@@ -83,8 +83,6 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
         VerticalLayout registerForm = new VerticalLayout();
         registerForm.addClassName("login-form");
         registerForm.setWidth("500px");
-        registerForm.getElement().getStyle().set("margin", "0 auto");
-        registerForm.setDefaultHorizontalComponentAlignment(Alignment.STRETCH);
         H1 heading = new H1("LectureRate");
         registerForm.setAlignSelf(Alignment.CENTER, heading);
 

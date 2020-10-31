@@ -19,7 +19,6 @@ public class ResetPasswordView extends VerticalLayout {
         VerticalLayout verticalLayout = new VerticalLayout();
         verticalLayout.addClassName("login-form");
         verticalLayout.setWidth("400px");
-        verticalLayout.getElement().getStyle().set("margin", "0 auto");
 
         Div message = new Div();
         message.setText("Bitte gebe hier dein neues Passwort ein.");

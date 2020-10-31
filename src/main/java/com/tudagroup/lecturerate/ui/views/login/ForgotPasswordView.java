@@ -20,8 +20,7 @@ public class ForgotPasswordView extends VerticalLayout {
         addClassName("login-view");
         VerticalLayout verticalLayout = new VerticalLayout();
         verticalLayout.addClassName("login-form");
-        verticalLayout.setWidth("330px");
-        verticalLayout.getElement().getStyle().set("margin", "0 auto");
+        verticalLayout.setWidth("350px");
 
         Div message = new Div();
         message.setText("Um dein Passwort zurückzusetzen, gib bitte deine Email an.");

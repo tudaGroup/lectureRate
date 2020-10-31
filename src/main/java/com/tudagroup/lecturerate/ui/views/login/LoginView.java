@@ -52,8 +52,6 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         VerticalLayout loginForm = new VerticalLayout();
         loginForm.addClassName("login-form");
         loginForm.setWidth("350px");
-        loginForm.getElement().getStyle().set("margin", "0 auto");
-        loginForm.setDefaultHorizontalComponentAlignment(Alignment.STRETCH);
 
         H1 heading = new H1("LectureRate");
         loginForm.setAlignSelf(Alignment.CENTER, heading);

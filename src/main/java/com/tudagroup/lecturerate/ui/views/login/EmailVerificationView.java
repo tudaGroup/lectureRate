@@ -24,7 +24,6 @@ public class EmailVerificationView extends VerticalLayout implements HasUrlParam
         VerticalLayout verticalLayout = new VerticalLayout();
         verticalLayout.addClassName("login-form");
         verticalLayout.setWidth("400px");
-        verticalLayout.getElement().getStyle().set("margin", "0 auto");
 
         Div message = new Div();
         message.setText("Bitte gib um dich zu verifizieren den Code an, der an deine TU-Email gesendet wurde.");
