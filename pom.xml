@@ -207,10 +207,6 @@
                     <maxAttempts>240</maxAttempts>
                 </configuration>
             </plugin>
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.0</version>
-            </plugin>
 
             <!--
                 Take care of synchronizing java dependencies and imports in
@@ -290,7 +286,6 @@
                             </execution>
                         </executions>
                     </plugin>
-
                     <!-- Runs the integration tests (*IT) after the server is started -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
