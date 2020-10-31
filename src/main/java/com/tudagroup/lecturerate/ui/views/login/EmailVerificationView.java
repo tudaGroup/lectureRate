@@ -5,13 +5,11 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.*;
 
-import java.util.logging.Logger;
 
 @Route("register/verify")
 @RouteAlias("forgot-password/verify")
@@ -20,15 +18,9 @@ import java.util.logging.Logger;
 public class EmailVerificationView extends VerticalLayout implements HasUrlParameter<String>, BeforeEnterObserver {
     String username;
     Div errorMessage = new Div();
-    static private final Logger LOGGER = Logger.getLogger(EmailVerificationView.class.getName());
 
     public EmailVerificationView(UserAccountService userAccountService) {
-        // Page level styles
         addClassName("login-view");
-        setSizeFull();
-        setAlignItems(Alignment.CENTER);
-        setJustifyContentMode(JustifyContentMode.CENTER);
-
         VerticalLayout verticalLayout = new VerticalLayout();
         verticalLayout.addClassName("login-form");
         verticalLayout.setWidth("400px");

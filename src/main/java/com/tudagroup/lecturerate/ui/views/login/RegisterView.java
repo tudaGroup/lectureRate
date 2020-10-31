@@ -37,12 +37,7 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
     Binder<UserAccount> binder = new Binder<>(UserAccount.class);
 
     public RegisterView(UserAccountService userAccountService) {
-        // Page level styles
         addClassName("login-view");
-        setSizeFull();
-        setAlignItems(Alignment.CENTER);
-        setJustifyContentMode(JustifyContentMode.CENTER);
-
         VerticalLayout registerForm = getRegisterForm();
         add(registerForm);
 

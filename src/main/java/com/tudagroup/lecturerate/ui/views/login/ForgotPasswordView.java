@@ -17,12 +17,7 @@ public class ForgotPasswordView extends VerticalLayout {
     Div errorMessage = new Div();
 
     public ForgotPasswordView(UserAccountService userAccountService) {
-        // Page level styles
         addClassName("login-view");
-        setSizeFull();
-        setAlignItems(Alignment.CENTER);
-        setJustifyContentMode(JustifyContentMode.CENTER);
-
         VerticalLayout verticalLayout = new VerticalLayout();
         verticalLayout.addClassName("login-form");
         verticalLayout.setWidth("330px");

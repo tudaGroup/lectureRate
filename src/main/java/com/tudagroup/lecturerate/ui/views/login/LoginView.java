@@ -24,12 +24,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
     Div authErrorMessage = new Div();
 
     public LoginView(UserAccountService userAccountService) {
-        // Page level styles
         addClassName("login-view");
-        setSizeFull();
-        setAlignItems(Alignment.CENTER);
-        setJustifyContentMode(JustifyContentMode.CENTER);
-
         VerticalLayout loginForm = getLoginForm();
         add(loginForm);
 
