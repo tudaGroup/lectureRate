@@ -1,9 +1,11 @@
 package com.tudagroup.lecturerate.ui.views.login;
 
 import com.tudagroup.lecturerate.backend.service.UserAccountService;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -11,15 +13,16 @@ import com.vaadin.flow.router.*;
 
 import java.util.logging.Logger;
 
-@Route("verify")
+@Route("register/verify")
+@RouteAlias("forgot-password/verify")
 @PageTitle("Verifikation | LectureRate")
 @CssImport("./styles/shared-styles.css")
-public class EmailVerification extends VerticalLayout implements HasUrlParameter<String>, BeforeEnterObserver {
+public class EmailVerificationView extends VerticalLayout implements HasUrlParameter<String>, BeforeEnterObserver {
     String username;
     Div errorMessage = new Div();
-    static private final Logger LOGGER = Logger.getLogger(EmailVerification.class.getName());
+    static private final Logger LOGGER = Logger.getLogger(EmailVerificationView.class.getName());
 
-    public EmailVerification(UserAccountService userAccountService) {
+    public EmailVerificationView(UserAccountService userAccountService) {
         // Page level styles
         addClassName("login-view");
         setSizeFull();
@@ -41,13 +44,21 @@ public class EmailVerification extends VerticalLayout implements HasUrlParameter
         HorizontalLayout horizontalLayout = new HorizontalLayout(verificationCode, send);
 
         send.addClickListener(click -> {
-            boolean successful = userAccountService.verifyEmail(verificationCode.getValue(), this.username);
+            boolean successful = userAccountService.verifyEmailAndAuthenticate(verificationCode.getValue(), this.username);
             if (successful) {
-                // Authenticated, reroute to main page
-                getUI().ifPresent(ui -> ui.getPage().setLocation("main"));
+                UI.getCurrent().getPage().executeJs("return window.location.href").then(String.class, location -> {
+                    String urlPath = location.split("/")[3];
+                    if (urlPath.equals("forgot-password")) {
+                        // Reroute to ResetPasswordView when email was verified because password was forgotten
+                        getUI().ifPresent(ui -> ui.getPage().setLocation("reset-password"));
+                    } else if (urlPath.equals("register")) {
+                        // Reroute to main page when email was verified for registering a new account
+                        getUI().ifPresent(ui -> ui.getPage().setLocation("main"));
+                    }
+                });
             } else {
                 // Show error message
-                getUI().ifPresent(ui -> ui.getPage().setLocation("verify/" + username + "?error"));
+                getUI().ifPresent(ui -> ui.getPage().setLocation("register/verify/" + username + "?error"));
             }
         });
 

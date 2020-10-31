@@ -123,7 +123,64 @@ final class EmailMessages {
                 "</table>";
     }
 
-    public static String getPasswordResetEmail() {
-        return "Not implemented yet";
+    public static String getPasswordResetEmail(String token) {
+        return
+            "<tbody>\n" +
+                "<tr>\n" +
+                "<td align=\"center\" style=\"padding:0;margin:0;line-height:1px;font-size:1px\">\n" +
+                "<table id=\"m_-5863738918755635720header\" align=\"center\" width=\"448\" style=\"width:448px;padding:0;margin:0;line-height:1px;font-size:1px\" bgcolor=\"#ffffff\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n" +
+                "<tbody>\n" +
+                "<tr>\n" +
+                "<td style=\"min-width:448px;padding:0;margin:0;line-height:1px;font-size:1px\"> <img src=\"https://ci4.googleusercontent.com/proxy/olz0jOQiwOKs810-_40TL7hjkyoDHhAfffrsDfXjBi0eH9ZPtuN9ozbJ4qp_3K3T216fZnFIGE-W22oQ9ZkivsZ3VC01TZckhPfMCfFHO9lUw_hkgTJi=s0-d-e1-ft#https://ea.twimg.com/email/self_serve/media/spacer-1402696023930.png\" style=\"min-width:448px;height:1px;margin:0;padding:0;display:block;border:none;outline:none\" class=\"CToWUd\"> </td>\n" +
+                "</tr>\n" +
+                "</tbody>\n" +
+                "</table> </td>\n" +
+                "</tr>\n" +
+                "<tr>\n" +
+                "<td align=\"center\" style=\"padding:0;margin:0;line-height:1px;font-size:1px\">\n" +
+                "\n" +
+                "<table id=\"m_-5863738918755635720header\" align=\"center\" width=\"448\" style=\"width:448px;background-color:#ffffff;padding:0;margin:0;line-height:1px;font-size:1px\" bgcolor=\"#ffffff\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n" +
+                "<tbody>\n" +
+                "<tr>\n" +
+                "<td colspan=\"4\" height=\"24\" style=\"height:24px;padding:0;margin:0;line-height:1px;font-size:1px\"> &nbsp; </td>\n" +
+                "</tr>\n" +
+                "<tr align=\"right\">\n" +
+                "<td width=\"24\" style=\"padding:0;margin:0;line-height:1px;font-size:1px\"></td>\n" +
+                "<td align=\"right\" style=\"padding:0;margin:0;line-height:1px;font-size:1px\"> <a href=\"#m_-5863738918755635720_\" style=\"text-decoration:none;border-style:none;border:0;padding:0;margin:0\"> <img width=\"32\" align=\"right\" src=\"https://ci3.googleusercontent.com/proxy/iN3k0ZioCk2xgkiOAklhQuRzOIm0f8AUFtLt9RS98-9NcfPVeGhBW2WyxnUFoFmHnhbVHMPxVhIHhcIsDnHPQ7Gbjnwfh6V2yeUOUkfI7KKmClNs7bL5S0_34um3ivFX7A=s0-d-e1-ft#https://ea.twimg.com/email/self_serve/media/Twitter_logo_180-1468901451975.png\" style=\"width:32px;margin:0;padding:0;display:block;border:none;outline:none\" class=\"CToWUd\"> </a> </td>\n" +
+                "<td width=\"24\" style=\"padding:0;margin:0;line-height:1px;font-size:1px\"></td>\n" +
+                "</tr>\n" +
+                "<tr>\n" +
+                "</tr>\n" +
+                "</tbody>\n" +
+                "</table>\n" +
+                "\n" +
+                "\n" +
+                "<table id=\"m_-5863738918755635720header\" align=\"center\" width=\"448\" style=\"width:448px;background-color:#ffffff;padding:0;margin:0;line-height:1px;font-size:1px\" bgcolor=\"#ffffff\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n" +
+                "<tbody>\n" +
+                "<tr align=\"left;\">\n" +
+                "<td width=\"24\" style=\"padding:0;margin:0;line-height:1px;font-size:1px\"></td>\n" +
+                "<td align=\"left;\" style=\"padding:0;margin:0;line-height:1px;font-size:1px\">\n" +
+                "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"padding:0;margin:0;line-height:1px;font-size:1px\">\n" +
+                "<tbody>\n" +
+                "<tr>\n" +
+                "<td align=\"left;\" style=\"padding:0;margin:0;line-height:1px;font-size:1px;font-family:'HelveticaNeue','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:24px;line-height:32px;font-weight:bold;color:#292f33;text-align:left;text-decoration:none\"> Du willst dein Passwort zurücksetzen? </td>\n" +
+                "</tr>\n" +
+                "<tr>\n" +
+                "<td height=\"12\" style=\"padding:0;margin:0;line-height:1px;font-size:1px\"></td>\n" +
+                "</tr>\n" +
+                "<tr>\n" +
+                "<td align=\"left;\" style=\"padding:0;margin:0;line-height:1px;font-size:1px;font-family:'HelveticaNeue','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:20px;font-weight:400;color:#292f33;text-align:left;text-decoration:none\"> Benutze den folgenden Verifikationscode, um dein Password zurückzusetzen. Wenn du dies nicht tun willst, bitte ignoriere diese Email. </td>\n" +
+                "</tr>\n" +
+                "<tr>\n" +
+                "<td height=\"24\" style=\"padding:0;margin:0;line-height:1px;font-size:1px\"></td>\n" +
+                "</tr>\n" +
+                "\n" +
+                "<tr>\n" +
+                "<td align=\"left;\" style=\"padding:0;margin:0;line-height:1px;font-size:1px;font-family:'HelveticaNeue','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:16px;font-weight:400;color:#292f33;text-align:left;text-decoration:none\"> <strong>" + token + "</strong> </td>\n" +
+                "</tr>\n" +
+                "\n" +
+                "<tr>\n" +
+                "</tbody>\n" +
+                "</table>";
     }
 }

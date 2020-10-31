@@ -68,7 +68,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
         // Links for switching to the RegisterView or for resetting the password
         RouterLink registerLink = new RouterLink("Registrieren", RegisterView.class);
-        RouterLink forgotPasswordLink = new RouterLink("Passwort vergessen", ForgotPassword.class);
+        RouterLink forgotPasswordLink = new RouterLink("Passwort vergessen", ForgotPasswordView.class);
         HorizontalLayout links = new HorizontalLayout(registerLink, forgotPasswordLink);
         links.setJustifyContentMode(JustifyContentMode.EVENLY);
 

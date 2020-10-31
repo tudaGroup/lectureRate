@@ -16,16 +16,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private static final String LOGIN_FAILURE_URL = "/login?error";
     private static final String LOGIN_URL = "/login";
     private static final String LOGOUT_SUCCESS_URL = "/login";
-    private static final String REGISTER_URL = "/register";
-    private static final String FORGOT_PASSWORD_URL = "/forgot-password";
-    private static final String EMAIL_VERIFICATION_URL = "/verify/**";
+    private static final String REGISTER_URL = "/register/**";
+    private static final String FORGOT_PASSWORD_URL = "/forgot-password/**";
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .requestCache().requestCache(new CustomRequestCache())
             .and().authorizeRequests()
-            .antMatchers(REGISTER_URL, FORGOT_PASSWORD_URL, EMAIL_VERIFICATION_URL).permitAll()
+            .antMatchers(REGISTER_URL, FORGOT_PASSWORD_URL).permitAll()
             .requestMatchers(SecurityUtils::isFrameworkInternalRequest).permitAll()
             .anyRequest().authenticated()
             .and().formLogin()

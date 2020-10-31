@@ -19,8 +19,6 @@ import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.*;
 
 import java.util.Calendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 @Route("register")
@@ -71,7 +69,7 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
                 boolean successful = userAccountService.register(newUser);
                 if (successful) {
                     // Verify email address
-                    getUI().ifPresent(ui -> ui.getPage().setLocation("verify/henry"));
+                    getUI().ifPresent(ui -> ui.getPage().setLocation("register/verify/henry"));
                 } else {
                     // Show authentication error
                     getUI().ifPresent(ui -> ui.getPage().setLocation("register?error"));
@@ -107,7 +105,7 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
 
         // Links for switching to the LoginView or for resetting the password
         RouterLink login = new RouterLink("Ich habe schon einen Account", LoginView.class);
-        RouterLink forgotPassword = new RouterLink("Passwort vergessen", ForgotPassword.class);
+        RouterLink forgotPassword = new RouterLink("Passwort vergessen", ForgotPasswordView.class);
         HorizontalLayout links = new HorizontalLayout(login, forgotPassword);
         links.setJustifyContentMode(JustifyContentMode.EVENLY);
 
