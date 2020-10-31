@@ -23,6 +23,7 @@ public class UserAccount implements UserDetails {
     private int enrollmentYear;
     private String fieldOfStudy;
     private String verificationCode;
+    private boolean isEmailVerified;
 
     public UserAccount(Long id, String email, String password, String username, int enrollmentYear, String fieldOfStudy, String verificationCode) {
         this.id = id;
@@ -119,5 +120,13 @@ public class UserAccount implements UserDetails {
 
     public void setVerificationCode(String verificationCode) {
         this.verificationCode = verificationCode;
+    }
+
+    public void setEmailVerified(boolean emailVerified) {
+        isEmailVerified = emailVerified;
+    }
+
+    public boolean isEmailVerified() {
+        return isEmailVerified;
     }
 }

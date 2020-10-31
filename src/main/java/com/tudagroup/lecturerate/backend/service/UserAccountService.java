@@ -70,6 +70,10 @@ public class UserAccountService {
         }
         UserAccount user = userDetails.get();
 
+        if (!user.isEmailVerified()) {
+            return false;
+        }
+
         // Check if password is correct
         boolean passwordCorrect = bCryptPasswordEncoder.matches(password, user.getPassword());
         if (!passwordCorrect) {
@@ -96,6 +100,7 @@ public class UserAccountService {
 
         authenticateUser(user);
         user.setVerificationCode(null);
+        user.setEmailVerified(true);
         userAccountRepository.saveAndFlush(user);
         return true;
     }
@@ -140,7 +145,7 @@ public class UserAccountService {
     // Creates a random token and sends it to the user to verify his email address
     //=============================================================================
     private void sendVerificationToken(UserAccount user, String message, String token) throws MessagingException {
-        sendMail(user.getEmail(),"Dein LectureRate Verifizierungscode", message);
+        sendMail(user.getEmail(), "Dein LectureRate Verifizierungscode", message);
         user.setVerificationCode(token);
     }
 
