@@ -114,6 +114,11 @@ public class UserAccountService {
             return null;
         }
         UserAccount user = userDetails.get();
+
+        if (!user.isEmailVerified()) {
+            return null;
+        }
+
         try {
             String token = generateToken();
             String message = EmailMessages.getPasswordResetEmail(token);
