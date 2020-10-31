@@ -24,17 +24,20 @@ public class Course {
     private String courseType;
     private String category;
     @ManyToMany
-    @JoinTable(name = "COURSE_PROFESSORS", joinColumns = @JoinColumn(name = "PROFESSOR_ID"), inverseJoinColumns = @JoinColumn(name = "COURSE_ID"))
+    @JoinTable(name = "COURSE_PROFESSORS", joinColumns = @JoinColumn(name = "COURSE_ID"), inverseJoinColumns = @JoinColumn(name = "PROFESSOR_ID"))
     private List<Professor> professors;
     private Integer creditPoints;
     @Enumerated(EnumType.ORDINAL)
     private Semester whenOffered;
-    private String description;
+    @Column(columnDefinition="TEXT")
+    private String content;
+    @Column(columnDefinition="TEXT")
+    private String objective;
 
     public Course() {
     }
 
-    public Course(String id, String name, Boolean offeredThisSemester, String courseType, String category, List<Professor> professors, Integer creditPoints, Semester whenOffered, String description) {
+    public Course(String id, String name, Boolean offeredThisSemester, String courseType, String category, List<Professor> professors, Integer creditPoints, Semester whenOffered, String content, String objective) {
         this.id = id;
         this.name = name;
         this.offeredThisSemester = offeredThisSemester;
@@ -43,7 +46,8 @@ public class Course {
         this.professors = professors;
         this.creditPoints = creditPoints;
         this.whenOffered = whenOffered;
-        this.description = description;
+        this.content = content;
+        this.objective = objective;
     }
 
     public String getID() {
@@ -110,11 +114,19 @@ public class Course {
         this.whenOffered = whenOffered;
     }
 
-    public String getDescription() {
-        return description;
+    public String getContent() {
+        return content;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setContent(String description) {
+        this.content = description;
+    }
+
+    public String getObjective() {
+        return objective;
+    }
+
+    public void setObjective(String objective) {
+        this.objective = objective;
     }
 }
