@@ -1,7 +1,7 @@
 #### Modulebook and web scraper
 ---
 ##### Usage:
-> setup. # install dependencies
+> setup.py # install dependencies
 > 
 >\_\_init\_\_.py # start extraction
 ##### Description
