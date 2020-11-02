@@ -10,12 +10,16 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
+/**
+ * EmailDriver class
+ * A class that abstracts the process of sending an email with Apache HTMLEmail
+ */
 public class EmailDriver {
-    private String host;
+    private String host;      // Web address of email service provider
     private Integer port;
-    private Boolean SSL;
-    private String username;
-    private String password;
+    private Boolean SSL;      // Enable SSL
+    private String username;  // username of the email account
+    private String password;  // password of the email account
 
 
     public EmailDriver(String host, Integer port, Boolean SSL, String username, String password) {
@@ -27,6 +31,11 @@ public class EmailDriver {
     }
 
 
+    /**
+     *
+     * @param config_file File path to config file relative to resource folder
+     * @throws IOException thrown if file not found
+     */
     public EmailDriver(String config_file) throws IOException {
         Properties props = new Properties();
         props.load(EmailDriver.class.getResourceAsStream(config_file));
@@ -37,6 +46,11 @@ public class EmailDriver {
         password = props.getProperty("password");
     }
 
+    /**
+     * Internal email object building function
+     * @return Email object used to send the email
+     * @throws EmailException
+     */
     private HtmlEmail createNewEmail() throws EmailException {
         HtmlEmail email = new HtmlEmail();
         email.setHostName(host);
@@ -47,6 +61,17 @@ public class EmailDriver {
         return email;
     }
 
+    /**
+     * Send an email with attachements to multiple recipients
+     * @param recipients Recipients
+     * @param subject Subject of the email
+     * @param msg message of the email
+     * @param attachments
+     * @param fileNames filenames of the attachements
+     * @param mimeTypes
+     * @throws EmailException
+     * @throws IOException
+     */
     public void send(Collection<String> recipients, String subject, String msg, List<InputStream> attachments, List<String> fileNames, List<String> mimeTypes) throws EmailException, IOException {
         HtmlEmail email = createNewEmail();
         email.addTo(recipients.toArray(new String[]{}));
@@ -65,6 +90,13 @@ public class EmailDriver {
         sender.start();
     }
 
+    /**
+     * Send an email without any attachments to multiple recipients
+     * @param recipients
+     * @param subject
+     * @param msg
+     * @throws EmailException
+     */
     public void send(Collection<String> recipients, String subject, String msg) throws EmailException {
         HtmlEmail email = createNewEmail();
         email.addTo(recipients.toArray(new String[]{}));
@@ -74,6 +106,13 @@ public class EmailDriver {
         sender.start();
     }
 
+    /**
+     * Send an email without any attachments ti single recipient
+     * @param recipient
+     * @param subject
+     * @param msg
+     * @throws EmailException
+     */
     public void send(String recipient, String subject, String msg) throws EmailException {
         HtmlEmail email = createNewEmail();
         email.addTo(recipient);
@@ -85,6 +124,10 @@ public class EmailDriver {
 
 }
 
+/**
+ * EmailSendThread class
+ * A class that allows emails to be sent in the background
+ */
 class EmailSendThread extends Thread {
     private HtmlEmail email;
 
