@@ -11,10 +11,10 @@ import com.vaadin.flow.server.PWA;
 
 @Route("")
 @RouteAlias("main")
-@PWA(name = "Vaadin Application",
-    shortName = "Vaadin App",
-    description = "This is an example Vaadin application.",
-    enableInstallPrompt = false)
+@PWA(name = "LectuRate",
+    shortName = "LectuRate",
+    description = "Review your lectures.",
+    enableInstallPrompt = true)
 @CssImport("./styles/shared-styles.css")
 public class MainView extends VerticalLayout {
 
