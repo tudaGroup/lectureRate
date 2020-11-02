@@ -1,4 +1,4 @@
-package com.tudagroup.lecturerate.security;
+package com.tudagroup.lecturerate.backend.service;
 
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
@@ -53,6 +53,7 @@ public class EmailDriver {
      */
     private HtmlEmail createNewEmail() throws EmailException {
         HtmlEmail email = new HtmlEmail();
+        email.setCharset("utf-8");
         email.setHostName(host);
         email.setFrom(username);
         email.setSmtpPort(port);
