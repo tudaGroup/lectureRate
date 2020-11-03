@@ -11,15 +11,11 @@ import javax.mail.internet.InternetAddress;
 public class StudentEmailValidator implements Validator<String> {
     @Override
     public ValidationResult apply(String email, ValueContext valueContext) {
-        return ValidationResult.ok();
-        /*
         if (email == null || !isValidEmailAddress(email) || !email.endsWith("@stud.tu-darmstadt.de")) {
             return ValidationResult.error("Bitte verwende deine TU-Email! (muss auf @stud.tu-darmstadt.de enden)");
         } else {
             return ValidationResult.ok();
         }
-
-         */
     }
 
     private boolean isValidEmailAddress(String email) {

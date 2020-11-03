@@ -28,7 +28,7 @@ public class UserAccountService {
     public UserAccountService(UserAccountRepository userAccountRepository, BCryptPasswordEncoder bCryptPasswordEncoder) throws IOException {
         this.userAccountRepository = userAccountRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.mailSender = new EmailDriver("/Application.properties");
+        this.mailSender = new EmailDriver("/.env");
     }
 
     //=================================================================================================

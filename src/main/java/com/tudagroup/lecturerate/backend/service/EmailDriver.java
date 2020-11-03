@@ -39,11 +39,11 @@ public class EmailDriver {
     public EmailDriver(String config_file) throws IOException {
         Properties props = new Properties();
         props.load(EmailDriver.class.getResourceAsStream(config_file));
-        host = props.getProperty("email.host");
-        port = Integer.parseInt(props.getProperty("email.port"));
-        SSL = Boolean.parseBoolean(props.getProperty("email.ssl"));
-        username = props.getProperty("email.username");
-        password = props.getProperty("email.password");
+        host = props.getProperty("EMAIL_HOST");
+        port = Integer.parseInt(props.getProperty("EMAIL_PORT"));
+        SSL = Boolean.parseBoolean(props.getProperty("EMAIL_SSL"));
+        username = props.getProperty("EMAIL");
+        password = props.getProperty("EMAIL_PASSWORD");
     }
 
     /**
