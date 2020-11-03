@@ -43,19 +43,18 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
 
         // Add data binding and validation
         binder.forField(username)
-            .asRequired("Bitte gebe einen Nutzernamen an!")
-            .bind("username");
+                .asRequired("Bitte gebe einen Nutzernamen an!")
+                .bind("username");
         binder.forField(email)
-            .asRequired("Bitte gebe deine TU-Email an!")
-            .withValidator(new StudentEmailValidator())
-            .bind("email");
+                .asRequired("Bitte gebe deine TU-Email an!")
+                .withValidator(new StudentEmailValidator())
+                .bind("email");
         binder.forField(enrollmentYear)
-            .bind("enrollmentYear");
+                .bind("enrollmentYear");
         addPasswordValidation();
 
         UserAccount newUser = new UserAccount();
         newUser.setFieldOfStudy("Informatik"); // Currently the only supported field of study
-        binder.readBean(newUser);
 
         // Register the new user
         registerButton.addClickListener(click -> {
@@ -125,6 +124,7 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
         }
         ComboBox<Integer> enrollmentYear = new ComboBox<>("Studienbeginn", lastTenYears);
         enrollmentYear.setWidth("50%");
+        enrollmentYear.setValue(currentYear);
         return enrollmentYear;
     }
 
@@ -134,9 +134,9 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         if (beforeEnterEvent.getLocation()
-            .getQueryParameters()
-            .getParameters()
-            .containsKey("error")) {
+                .getQueryParameters()
+                .getParameters()
+                .containsKey("error")) {
             authErrorMessage.setVisible(true);
         }
     }
@@ -151,17 +151,17 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
         Pattern containsSpecialChar = Pattern.compile("[^a-z0-9]", Pattern.CASE_INSENSITIVE);
 
         binder.forField(password)
-            .asRequired("Bitte gebe ein Passwort ein!")
-            .withValidator(password -> password.length() >= 8,
-                "Passwort muss mindestens 8 Zeichen lang sein!")
-            .withValidator(password -> containsLowerCase.matcher(password).find(),
-                "Passwort muss mindestens einen Kleinbuchstaben enthalten!")
-            .withValidator(password -> containsUpperCase.matcher(password).find(),
-                "Passwort muss mindestens einen Großbuchstaben enthalten!")
-            .withValidator(password -> containsNumber.matcher(password).find(),
-                "Passwort muss mindestens eine Zahl enthalten")
-            .withValidator(password -> containsSpecialChar.matcher(password).find(),
-                "Passwort muss mindestens ein Sonderzeichen enthalten!")
-            .bind("password");
+                .asRequired("Bitte gebe ein Passwort ein!")
+                .withValidator(password -> password.length() >= 8,
+                        "Passwort muss mindestens 8 Zeichen lang sein!")
+                .withValidator(password -> containsLowerCase.matcher(password).find(),
+                        "Passwort muss mindestens einen Kleinbuchstaben enthalten!")
+                .withValidator(password -> containsUpperCase.matcher(password).find(),
+                        "Passwort muss mindestens einen Großbuchstaben enthalten!")
+                .withValidator(password -> containsNumber.matcher(password).find(),
+                        "Passwort muss mindestens eine Zahl enthalten")
+                .withValidator(password -> containsSpecialChar.matcher(password).find(),
+                        "Passwort muss mindestens ein Sonderzeichen enthalten!")
+                .bind("password");
     }
 }
