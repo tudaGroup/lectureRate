@@ -81,9 +81,9 @@ public class EmailVerificationView extends VerticalLayout implements HasUrlParam
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         if (beforeEnterEvent.getLocation()
-            .getQueryParameters()
-            .getParameters()
-            .containsKey("error")) {
+                .getQueryParameters()
+                .getParameters()
+                .containsKey("error")) {
             errorMessage.setVisible(true);
         }
     }

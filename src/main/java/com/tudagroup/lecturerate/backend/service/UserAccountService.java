@@ -2,8 +2,7 @@ package com.tudagroup.lecturerate.backend.service;
 
 import com.tudagroup.lecturerate.backend.entity.UserAccount;
 import com.tudagroup.lecturerate.backend.repository.UserAccountRepository;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import org.apache.commons.mail.EmailException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,7 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
+import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Optional;
@@ -22,13 +22,13 @@ import java.util.logging.Logger;
 public class UserAccountService {
     private final UserAccountRepository userAccountRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final JavaMailSender mailSender;
+    private final EmailDriver mailSender;
     static private final Logger LOGGER = Logger.getLogger(UserAccountService.class.getName());
 
-    public UserAccountService(UserAccountRepository userAccountRepository, BCryptPasswordEncoder bCryptPasswordEncoder, JavaMailSender mailSender) {
+    public UserAccountService(UserAccountRepository userAccountRepository, BCryptPasswordEncoder bCryptPasswordEncoder) throws IOException {
         this.userAccountRepository = userAccountRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.mailSender = mailSender;
+        this.mailSender = new EmailDriver("/.env");
     }
 
     //=================================================================================================
@@ -48,7 +48,7 @@ public class UserAccountService {
                 String token = generateToken();
                 String message = EmailMessages.getVerificationEmail(token);
                 sendVerificationToken(newUser, message, token);
-            } catch (MessagingException e) {
+            } catch (EmailException e) {
                 return false;
             }
             userAccountRepository.saveAndFlush(newUser);
@@ -123,7 +123,7 @@ public class UserAccountService {
             String token = generateToken();
             String message = EmailMessages.getPasswordResetEmail(token);
             sendVerificationToken(user, message, token);
-        } catch (MessagingException e) {
+        } catch (EmailException e) {
             return null;
         }
         userAccountRepository.saveAndFlush(user);
@@ -149,14 +149,15 @@ public class UserAccountService {
     //=============================================================================
     // Creates a random token and sends it to the user to verify his email address
     //=============================================================================
-    private void sendVerificationToken(UserAccount user, String message, String token) throws MessagingException {
-        sendMail(user.getEmail(), "Dein LectureRate Verifizierungscode", message);
+    private void sendVerificationToken(@NotNull UserAccount user, String message, String token) throws EmailException {
+        mailSender.send(user.getEmail(), "Dein LectureRate Verifizierungscode", message);
         user.setVerificationCode(token);
     }
 
     //==================================================
     // Sends a mail with given subject and message text
     //==================================================
+    /*
     private void sendMail(String email, String subject, String message) throws MessagingException {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
@@ -165,6 +166,7 @@ public class UserAccountService {
         helper.setSubject(subject);
         mailSender.send(mimeMessage);
     }
+    */
 
     //=============================================================================
     // Generates a random string that will be send to the user to verify his email

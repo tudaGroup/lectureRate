@@ -64,7 +64,7 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
                 boolean successful = userAccountService.register(newUser);
                 if (successful) {
                     // Verify email address
-                    getUI().ifPresent(ui -> ui.getPage().setLocation("register/verify/henry"));
+                    getUI().ifPresent(ui -> ui.getPage().setLocation("register/verify/" + newUser.getUsername()));
                 } else {
                     // Show authentication error
                     getUI().ifPresent(ui -> ui.getPage().setLocation("register?error"));
