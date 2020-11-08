@@ -17,5 +17,5 @@ for module in modules:
         module['category'],
         module['content'],
         module['objective']
-    ), ignore=True)
+    ), on_conflict='DO NOTHING')
 course_db.disconnect()
