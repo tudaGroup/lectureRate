@@ -5,7 +5,7 @@ import io
 
 course_db = CourseTable(r'lib/database.ini')
 course_db.connect()
-f = io.open('../INFORMATIK_COURSES.json', 'r', encoding='utf-8')
+f = io.open('INFORMATIK_COURSES.json', 'r', encoding='utf-8')
 modules = json.load(f)
 for module in modules:
     course_db.insert(Module(
