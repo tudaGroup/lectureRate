@@ -5,8 +5,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 @Entity
 public class UserAccount implements UserDetails {
@@ -19,17 +19,20 @@ public class UserAccount implements UserDetails {
     @NotBlank
     private String password;
     @NotBlank
-    private String name;
-    private Date startYear;
+    private String username;
+    private int enrollmentYear;
     private String fieldOfStudy;
+    private String verificationCode;
+    private boolean isEmailVerified;
 
-    public UserAccount(Long id, String email, String password, String name, Date startYear, String fieldOfStudy) {
+    public UserAccount(Long id, String email, String password, String username, int enrollmentYear, String fieldOfStudy, String verificationCode) {
         this.id = id;
         this.email = email;
         this.password = password;
-        this.name = name;
-        this.startYear = startYear;
+        this.username = username;
+        this.enrollmentYear = enrollmentYear;
         this.fieldOfStudy = fieldOfStudy;
+        this.verificationCode = verificationCode;
     }
 
     public UserAccount() {
@@ -53,16 +56,14 @@ public class UserAccount implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        GrantedAuthority grantedAuthority = (GrantedAuthority) () -> "ROLE_USER";
+        grantedAuthorities.add(grantedAuthority);
+        return grantedAuthorities;
     }
 
     public String getPassword() {
         return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return name;
     }
 
     @Override
@@ -89,20 +90,20 @@ public class UserAccount implements UserDetails {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public Date getStartYear() {
-        return startYear;
+    public int getEnrollmentYear() {
+        return enrollmentYear;
     }
 
-    public void setStartYear(Date startYear) {
-        this.startYear = startYear;
+    public void setEnrollmentYear(int enrollmentYear) {
+        this.enrollmentYear = enrollmentYear;
     }
 
     public String getFieldOfStudy() {
@@ -111,5 +112,21 @@ public class UserAccount implements UserDetails {
 
     public void setFieldOfStudy(String fieldOfStudy) {
         this.fieldOfStudy = fieldOfStudy;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public void setEmailVerified(boolean emailVerified) {
+        isEmailVerified = emailVerified;
+    }
+
+    public boolean isEmailVerified() {
+        return isEmailVerified;
     }
 }
