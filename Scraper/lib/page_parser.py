@@ -1,5 +1,5 @@
 import re
-from lib.module import Module, Turnus
+from lib.module import Module, Turnus, CourseType, Category
 
 
 class PageParser:
@@ -8,6 +8,7 @@ class PageParser:
 
     :param to_be_ignored: tokens that should be ignored
     """
+
     def __init__(self, to_be_ignored: list = []):
         self.to_be_ignored = [(re.compile(regex[0]), regex[1]) for regex in to_be_ignored]
         self.blank_pattern = re.compile(r'^(?![\s\S])')
@@ -17,12 +18,16 @@ class PageParser:
         self.module_name_flag = re.compile('Modulname')
         self.module_nr_flag = re.compile('Modul Nr.')
         self.m_person_flag = re.compile('Modulverantwortliche Person')
+        self.m_person_end_flag = re.compile(r'\s+1\s+Kurse des Moduls')
         self.cp_flag = re.compile('Kreditpunkte')
         self.arbeitsaufwand_flag = re.compile('Arbeitsaufwand')
+        self.arbeitsaufwandcp_flag = re.compile(r'Arbeitsaufwand\s*\(CP\)')
         self.turnus_flag = re.compile('Angebotsturnus')
         self.language_flag = re.compile('Sprache')
-        self.course_nr_flag = re.compile('Kurs Nr.')
+        self.course_nr_flag = re.compile('Kurs\s+Nr.')
+        self.course_name_flag = re.compile("Kursname")
         self.sws_flag = re.compile('SWS')
+        self.coordinator_re = re.compile(r'\s*Koordinatoren/Koordinatorinnen\s*')
         self.content_flag = re.compile(r'Lerninhalt')
         self.objectives_flag = re.compile(r'(3\s*)?Qualifikationsziele\s*/\s*Lernergebnisse(\s*/\s*Kompetenzen)?')
         self.prerequisites_flag = re.compile(r'(4\s+)?Voraussetzung\s+für\s+die\s+Teilnahme')
@@ -32,17 +37,34 @@ class PageParser:
         self.number_pattern = re.compile(r'\d+')
         self.remove_1 = re.compile(r'\s+-\s+(und)?')
         self.type_mapping = {
-            'iv': 'Integrierte Lehrveranstaltung',
-            'pj': 'Projektseminar',
-            'pl': 'Praktikum in der Lehre',
-            'pp': 'Projektpraktikum',
-            'pr': 'Praktikum',
-            'se': 'Seminar',
-            'tt': 'Tutorium',
-            'ue': 'Übung',
-            'vl': 'Vorlesung',
-            'vu': 'Vorlseung und Übung'
+            'iv': CourseType.LECTURE,
+            'pj': CourseType.SEMINAR,
+            'pl': CourseType.PRACTICAL_WORK,
+            'pp': CourseType.PRACTICAL_WORK,
+            'pr': CourseType.PRACTICAL_WORK,
+            'se': CourseType.SEMINAR,
+            'tt': CourseType.SEMINAR,
+            'ue': CourseType.LECTURE,
+            'vl': CourseType.LECTURE,
+            'vu': CourseType.LECTURE
         }
+        self.category_map = [
+            (re.compile(r'IT-Sicherheit'), Category.SECURITY),
+            (re.compile(r'Robotik\s*,\s*Computational\s*und\s*Computer\s*Engineering'), Category.HARDWARE),
+            (re.compile(
+                r'Netze\s*und\s*verteilte\s*Systeme|Distributed\s*Software\s*Systems|Prof.\s*Dr.\s*-\s*Ing.\s*Ralf\s*Steinmetz'),
+             Category.NETWORKS),
+            (
+                re.compile(
+                    r'Software\s*-\s*Systeme\s*und\s*formale\s*Grundlagen'
+                    r'|Internet\s*-\s*und\s*Web-basierte Systeme'
+                ),
+                Category.SOFTWARE
+            ),
+            (re.compile(r'Web,\s*Wissens\s*-\s*und\s*Informationsverarbeitung'), Category.WEB),
+            (re.compile(r'Visual\s*&\s*Interactive Computing'), Category.VISUAL),
+
+        ]
 
     def process_one_line_str(self, string):
         """
@@ -146,6 +168,9 @@ class PageParser:
         res = self.course_id_pattern.search(page, 0)
         return res.group('id')
 
+    def parse_study_of_field(self, page):
+        return ''
+
     def parse_category(self, page):
         """
         Parse the category of module. This method is not implemented and should be overwritten if
@@ -154,7 +179,31 @@ class PageParser:
         :param page:
         :return: category of the module
         """
-        return ''
+        potential_ends = [self.m_person_end_flag, self.course_nr_flag, self.arbeitsaufwandcp_flag,
+                          self.course_name_flag]
+        res = self.m_person_flag.search(page)
+        if res:
+            start = res.span()[1]
+            best_end = 0xFFFFFFFF
+            for potential_end in potential_ends:
+                end = potential_end.search(page)
+                if end:
+                    end = end.span()[0]
+                    if end < start:
+                        continue
+                    elif end < best_end:
+                        best_end = end
+            if best_end == 0xFFFFFFFF:
+                best_end = 0
+            category = self.coordinator_re.sub('', re.sub('- ', '-', re.sub(r'\n', ' ', page[start: best_end])))
+            category = re.sub(r'\d', '', category)
+            for ignore in self.to_be_ignored:
+                category = ignore[0].sub(ignore[1], category)
+            c = category.strip()
+            for matcher, cat in self.category_map:
+                if matcher.match(c):
+                    return cat
+        return Category.MANDATORY
 
     def parse_content(self, page):
         """

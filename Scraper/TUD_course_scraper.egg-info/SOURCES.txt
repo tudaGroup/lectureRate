@@ -1,0 +1,6 @@
+setup.py
+TUD_course_scraper.egg-info/PKG-INFO
+TUD_course_scraper.egg-info/SOURCES.txt
+TUD_course_scraper.egg-info/dependency_links.txt
+TUD_course_scraper.egg-info/requires.txt
+TUD_course_scraper.egg-info/top_level.txt

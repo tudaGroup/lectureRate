@@ -11,14 +11,19 @@ def scrape():
            "~guVNw0SeicOMNLwwLveUUnuXL6ZvYrQRbrgAzeDhr4EkKBCDyqvbMvduDkc8rxk~7JDRxx1PUoBs61WqTveAD0l1b~eNiRm4AykwiLA7hkR" \
            "~ls1-JpsJw4LjZISNQ4xCdeCDaAc5L2XrsSQ_ "
 
-    ct = CourseTable("lib/database.ini")
-    pt = ProfessorTable("lib/database.ini")
-    pct = ProfessorCourseTable("lib/database.ini")
+    ct = CourseTable()
+    pt = ProfessorTable()
+    pct = ProfessorCourseTable()
 
     # Scrape from PDF
     scraper = ModulebookScraper("MHB_BSC_MSC_Informatik.pdf",
                                 ignore_lst=[(r"\s*Modulhandbuch B. Sc./M. Sc. Informatik\s+\d+\s*", ' ')])
     scraper.scrape()
+    l = set()
+    for module in scraper.modules:
+        l.add(module.category)
+    print(l)
+    """
     scraper.to_json("INFORMATIK_COURSES.json")
 
     # Scrape from web
@@ -49,3 +54,4 @@ def scrape():
     ct.disconnect()
     pt.disconnect()
     pct.disconnect()
+"""
