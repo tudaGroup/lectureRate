@@ -38,10 +38,11 @@ public class UserAccountService {
 
     /**
      * Saves the user data together with a verification token, if the user doesn't have an account yet
+     *
      * @param newUser the data of the new user to be registered
      * @return true, when everything was successful
-     *         false when user with that email or username already exists or
-     *         false if there was an error sending the verification email
+     * false when user with that email or username already exists or
+     * false if there was an error sending the verification email
      */
     public boolean register(UserAccount newUser) {
         Optional<UserAccount> user = userAccountRepository.findByEmailOrUsername(newUser.getEmail(), newUser.getUsername());
@@ -65,12 +66,13 @@ public class UserAccountService {
 
     /**
      * Logs the user in
+     *
      * @param usernameOrEmail username or email of the user to log in
-     * @param password provided password that is checked against the one stored in the database for that user
+     * @param password        provided password that is checked against the one stored in the database for that user
      * @return true, if login was successful
-     *         false, if user with that name or email does not exist or
-     *         false, if the user has not verified his email yet or
-     *         false if the password is incorrect
+     * false, if user with that name or email does not exist or
+     * false, if the user has not verified his email yet or
+     * false if the password is incorrect
      */
     public boolean login(String usernameOrEmail, String password) {
         // Check if user with that email or username exists
@@ -99,10 +101,11 @@ public class UserAccountService {
 
     /**
      * Verifies the user email and authenticates the user upon providing the correct verification token
-     * @param token provided verification token which is checked against the one in the database
+     *
+     * @param token    provided verification token which is checked against the one in the database
      * @param username user to be authenticated
      * @return true, if email got successfully verified
-     *         false, if the user does not exist or the verification token is wrong
+     * false, if the user does not exist or the verification token is wrong
      */
     public boolean verifyEmailAndAuthenticate(String token, String username) {
         Optional<UserAccount> userDetails = userAccountRepository.findByUsername(username);
@@ -124,6 +127,7 @@ public class UserAccountService {
 
     /**
      * Sends an email to the user to verify the password reset request
+     *
      * @param email address where to send the email
      * @return the name of the user, where the email was send to
      */
@@ -151,6 +155,7 @@ public class UserAccountService {
 
     /**
      * Updates the password of the currently logged in user
+     *
      * @param password new password
      */
     public void setNewPassword(String password) {
@@ -163,6 +168,7 @@ public class UserAccountService {
 
     /**
      * Sets the provided user as authenticated.
+     *
      * @param user user to authenticate
      */
     private void authenticateUser(UserAccount user) {
@@ -172,9 +178,10 @@ public class UserAccountService {
 
     /**
      * Sends a random verification token to the user to verify his email address
-     * @param user user to send the email to
+     *
+     * @param user    user to send the email to
      * @param message text of the email
-     * @param token random verification token
+     * @param token   random verification token
      * @throws EmailException when the email couldn't be send
      */
     private void sendVerificationToken(@NotNull UserAccount user, String message, String token) throws EmailException {
@@ -184,6 +191,7 @@ public class UserAccountService {
 
     /**
      * Generates a random alphanumerical string used as a verification token
+     *
      * @return verification token
      */
     private String generateToken() {
