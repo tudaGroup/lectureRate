@@ -5,14 +5,13 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-//@Entity
+/**
+ * This class stores information about university courses of computer science held at TUD
+ *
+ * @author sijunkwon
+ */
+@Entity
 public class Course {
-    public enum Semester {
-        summer,
-        winter,
-        summer_winter
-    }
-
     @Id
     @NotBlank
     @Column(unique = true)
@@ -21,23 +20,37 @@ public class Course {
     private String name;
     @NotNull
     private Boolean offeredThisSemester;
-    private String courseType;
-    private String category;
+    @Enumerated(EnumType.ORDINAL)
+    private CourseType courseType;
+    @Enumerated(EnumType.ORDINAL)
+    private Category category;
     @ManyToMany
     @JoinTable(name = "COURSE_PROFESSORS", joinColumns = @JoinColumn(name = "COURSE_ID"), inverseJoinColumns = @JoinColumn(name = "PROFESSOR_ID"))
     private List<Professor> professors;
     private Integer creditPoints;
     @Enumerated(EnumType.ORDINAL)
     private Semester whenOffered;
-    @Column(columnDefinition="TEXT")
+    @Column(columnDefinition = "TEXT")
     private String content;
-    @Column(columnDefinition="TEXT")
+    @Column(columnDefinition = "TEXT")
     private String objective;
 
     public Course() {
     }
 
-    public Course(String id, String name, Boolean offeredThisSemester, String courseType, String category, List<Professor> professors, Integer creditPoints, Semester whenOffered, String content, String objective) {
+    /**
+     * @param id                  unique id given to the course by the university itself
+     * @param name                the title of the course
+     * @param offeredThisSemester if it is offered in the current semester
+     * @param courseType          lecture, seminar or practical work
+     * @param category            the elective area of the course, e.g. computer networks
+     * @param professors          the professors responsible for the course
+     * @param creditPoints        how many credit points are awarded for completing the course
+     * @param whenOffered         if it is offered in the summer or winter term
+     * @param content             summary of the course content
+     * @param objective           the learning objectives of the course
+     */
+    public Course(String id, String name, Boolean offeredThisSemester, CourseType courseType, Category category, List<Professor> professors, Integer creditPoints, Semester whenOffered, String content, String objective) {
         this.id = id;
         this.name = name;
         this.offeredThisSemester = offeredThisSemester;
@@ -74,19 +87,19 @@ public class Course {
         this.offeredThisSemester = offeredThisSemester;
     }
 
-    public String getCourseType() {
+    public CourseType getCourseType() {
         return courseType;
     }
 
-    public void setCourseType(String courseType) {
+    public void setCourseType(CourseType courseType) {
         this.courseType = courseType;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 

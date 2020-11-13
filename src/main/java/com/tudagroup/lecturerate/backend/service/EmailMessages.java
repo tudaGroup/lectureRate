@@ -1,10 +1,21 @@
 package com.tudagroup.lecturerate.backend.service;
 
+/**
+ * This class stores the html for the emails send for email verification and password reset
+ *
+ * @author henryhelm
+ */
 final class EmailMessages {
     private EmailMessages() {
         // Constants only
     }
 
+    /**
+     * Text for email, telling the user to enter the included token to verify his email
+     *
+     * @param token verification token for the user
+     * @return the html of the email
+     */
     public static String getVerificationEmail(String token) {
         return
             "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\" bgcolor=\"#ffffff\" style=\"padding:0px;line-height:1px;font-size:1px;margin:0px auto\">\n" +
@@ -123,6 +134,12 @@ final class EmailMessages {
                 "</table>";
     }
 
+    /**
+     * Text for email, telling the user that he has to enter the included token to reset his password
+     *
+     * @param token verification token for the user
+     * @return the html of the email
+     */
     public static String getPasswordResetEmail(String token) {
         return
             "<tbody>\n" +

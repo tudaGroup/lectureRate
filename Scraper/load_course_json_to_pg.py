@@ -3,9 +3,9 @@ from lib.database import CourseTable
 from lib.module import Module
 import io
 
-course_db = CourseTable(r'../lib/database.ini')
+course_db = CourseTable(r'lib/database.ini')
 course_db.connect()
-f = io.open('../INFORMATIK_COURSES.json', 'r', encoding='utf-8')
+f = io.open('INFORMATIK_COURSES.json', 'r', encoding='utf-8')
 modules = json.load(f)
 for module in modules:
     course_db.insert(Module(
@@ -17,5 +17,5 @@ for module in modules:
         module['category'],
         module['content'],
         module['objective']
-    ), ignore=True)
+    ), on_conflict='DO NOTHING')
 course_db.disconnect()

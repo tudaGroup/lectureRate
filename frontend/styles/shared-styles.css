@@ -1,3 +1,27 @@
+.header {
+    padding: 0 var(--lumo-space-m);
+    background-color: #3B8ACD;
+}
+
+.header h1.logo {
+    font-size: 1.5em;
+    margin: var(--lumo-space-m);
+    color: white;
+}
+
+.logout {
+    color: white;
+    border: 1px solid white;
+    border-radius: 10px;
+    padding: 5px 15px;
+    position: absolute;
+    right: 30px;
+}
+
+.logout:hover {
+    text-decoration: none;
+}
+
 .login-view {
     background-image: url("img/background.jpg");
     background-size: cover;

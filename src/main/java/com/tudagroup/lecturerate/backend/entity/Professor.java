@@ -4,7 +4,13 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 
-//@Entity
+/**
+ * This stores information about professors. A separate entity is needed, because
+ * there is a many-to-many relationship between courses and professors
+ *
+ * @author sijunkwon
+ */
+@Entity
 public class Professor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
