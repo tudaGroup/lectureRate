@@ -7,20 +7,21 @@ class PostgresDriver:
     """
     Driver for PostgredDB
     """
-    def __init__(self, config_file: str):
+    def __init__(self, config_file: str = None):
         """
 
         :param config_file: Configuration file containing Postgres Configuration
         """
-        parser = ConfigParser()
-        parser.read(config_file)
         db = {}
-        if parser.has_section('postgresql'):
-            params = parser.items('postgresql')
-            for param in params:
-                db[param[0]] = param[1]
-        else:
-            raise Exception(f"Section 'postgresql' not found in the {config_file} file.")
+        if config_file:
+            parser = ConfigParser()
+            parser.read(config_file)
+            if parser.has_section('postgresql'):
+                params = parser.items('postgresql')
+                for param in params:
+                    db[param[0]] = param[1]
+            else:
+                raise Exception(f"Section 'postgresql' not found in the {config_file} file.")
         self.conf: dict = db
         self.conn = None
         self.cur = None
@@ -185,7 +186,7 @@ class CourseTable(PostgresDriver):
         :param where: equality predicates as kwargs
         :return: Selected modules as a list of tuple
         """
-        self.cur.execute(PostgresDriver.build_select("course", select, **where))
+        self.cur.execute(CourseTable.select_s(select, **where))
         return self.cur.fetchall()
 
     def insert(self, module: Module, on_conflict=''):
@@ -195,10 +196,7 @@ class CourseTable(PostgresDriver):
         :param on_conflict: What to do on conflict, throws Exception if not defined
         :return: None
         """
-        sql = PostgresDriver.build_insert("course", **module.get_fields())
-        if len(on_conflict) > 0:
-            sql += f" ON CONFLICT (id) {on_conflict}"
-        self.cur.execute(sql)
+        self.cur.execute(CourseTable.insert_s(module, on_conflict))
         self.conn.commit()
 
     def delete(self, **where):
@@ -207,9 +205,7 @@ class CourseTable(PostgresDriver):
         :param where: equality predicates as kwargs
         :return: None
         """
-        if len(where) < 1:
-            return
-        self.cur.execute(PostgresDriver.build_delete("course", **where))
+        self.cur.execute(CourseTable.delete(**where))
         self.conn.commit()
 
     def delete_all(self):
@@ -217,7 +213,7 @@ class CourseTable(PostgresDriver):
         Delete all courses in the table
         :return: None
         """
-        self.cur.execute(PostgresDriver.build_delete("course"))
+        self.cur.execute(CourseTable.delete_all_s())
         self.conn.commit()
 
     def update(self, updates: dict, **where):
@@ -229,8 +225,35 @@ class CourseTable(PostgresDriver):
         """
         if len(updates) < 1:
             return
-        self.cur.execute(PostgresDriver.build_update("course", updates, **where))
+        self.cur.execute(CourseTable.update_s(updates, **where))
         self.conn.commit()
+
+    @staticmethod
+    def select_s(select: list = [], **where):
+        return PostgresDriver.build_select("course", select, **where)
+
+    @staticmethod
+    def insert_s(module: Module, on_conflict=''):
+        sql = PostgresDriver.build_insert("course", **module.get_fields())
+        if len(on_conflict) > 0:
+            sql += f" ON CONFLICT (id) {on_conflict}"
+        return sql
+
+    @staticmethod
+    def delete_s(**where):
+        if len(where) < 1:
+            return ""
+        return PostgresDriver.build_delete("course", **where)
+
+    @staticmethod
+    def delete_all_s():
+        return PostgresDriver.build_delete("course")
+
+    @staticmethod
+    def update_s(updates: dict, **where):
+        if len(updates) < 1:
+            return ""
+        return PostgresDriver.build_update("course", updates, **where)
 
 
 class ProfessorTable(PostgresDriver):
@@ -241,7 +264,7 @@ class ProfessorTable(PostgresDriver):
         :param where: equality predicates as kwargs
         :return: Selected professors as a list of tuple
         """
-        self.cur.execute(PostgresDriver.build_select("professor", select, **where))
+        self.cur.execute(ProfessorTable.select_s(select, **where))
         return self.cur.fetchall()
 
     def insert(self, prof_name: str):
@@ -250,7 +273,7 @@ class ProfessorTable(PostgresDriver):
         :param prof_name: professor to be inserted
         :return: None
         """
-        self.cur.execute(PostgresDriver.build_insert("professor", name=prof_name))
+        self.cur.execute(ProfessorTable.insert_s(prof_name))
         self.conn.commit()
 
     def delete(self, **where):
@@ -261,7 +284,7 @@ class ProfessorTable(PostgresDriver):
         """
         if len(where) < 1:
             return
-        self.cur.execute(PostgresDriver.build_delete("professor", **where))
+        self.cur.execute(ProfessorTable.delete_s(**where))
         self.conn.commit()
 
     def delete_all(self):
@@ -269,7 +292,7 @@ class ProfessorTable(PostgresDriver):
         Delete all professors in the table
         :return: None
         """
-        self.cur.execute(PostgresDriver.build_delete("professor"))
+        self.cur.execute(ProfessorTable.delete_all_s())
         self.conn.commit()
 
     def update(self, updates: dict, **where):
@@ -281,8 +304,33 @@ class ProfessorTable(PostgresDriver):
         """
         if len(updates) < 1:
             return
-        self.cur.execute(PostgresDriver.build_update("course", updates, **where))
+        self.cur.execute(ProfessorTable.update_s(updates, **where))
         self.conn.commit()
+
+    @staticmethod
+    def select_s(select: list = [], **where):
+        return PostgresDriver.build_select("professor", select, **where)
+
+    @staticmethod
+    def insert_s(prof_name: str):
+        sql = PostgresDriver.build_insert("professor", name=prof_name)
+        return sql
+
+    @staticmethod
+    def delete_s(**where):
+        if len(where) < 1:
+            return ""
+        return PostgresDriver.build_delete("professor", **where)
+
+    @staticmethod
+    def delete_all_s():
+        return PostgresDriver.build_delete("professor")
+
+    @staticmethod
+    def update_s(updates: dict, **where):
+        if len(updates) < 1:
+            return ""
+        return PostgresDriver.build_update("professor", updates, **where)
 
 
 class ProfessorCourseTable(PostgresDriver):
@@ -295,11 +343,8 @@ class ProfessorCourseTable(PostgresDriver):
         """
         res = True
         try:
-            if type(prof) == int:
-                sql = f"INSERT INTO course_professors (course_id, professor_id) VALUES ('{course_id}', {prof})"
-            elif type(prof) == str:
-                sql = f"INSERT INTO course_professors (course_id, professor_id) VALUES ('{course_id}', (SELECT id FROM professor WHERE name = '{prof}'))"
-            else:
+            sql = ProfessorCourseTable.insert_s(course_id, prof)
+            if sql == "":
                 return False
             self.cur.execute(sql)
         except Exception as err:
@@ -316,7 +361,7 @@ class ProfessorCourseTable(PostgresDriver):
         :param where: equality predicates as kwargs
         :return: Selected modules as a list of tuple
         """
-        self.cur.execute(PostgresDriver.build_select("course_professors", select, **where))
+        self.cur.execute(ProfessorCourseTable.select_s(select, **where))
         return self.cur.fetchall()
 
     def delete(self, where):
@@ -327,7 +372,7 @@ class ProfessorCourseTable(PostgresDriver):
         """
         if len(where) < 1:
             return
-        self.cur.execute(PostgresDriver.build_delete("course_professors", **where))
+        self.cur.execute(ProfessorCourseTable.delete_s(**where))
         self.conn.commit()
 
     def delete_all(self):
@@ -335,7 +380,7 @@ class ProfessorCourseTable(PostgresDriver):
         Delete all entries in the table
         :return: None
         """
-        self.cur.execute(PostgresDriver.build_delete("course_professors"))
+        self.cur.execute(ProfessorCourseTable.delete_all_s())
         self.conn.commit()
 
     def update(self, updates: dict, **where):
@@ -345,7 +390,34 @@ class ProfessorCourseTable(PostgresDriver):
         :param where: equality predicates as kwargs
         :return: None
         """
-        if len(updates) < 1:
-            return
-        self.cur.execute(PostgresDriver.build_update("course_professors", updates, **where))
+        self.cur.execute(ProfessorCourseTable.update_s(updates, **where))
         self.conn.commit()
+
+    @staticmethod
+    def select_s(select: list = [], **where):
+        return PostgresDriver.build_select("course_professors", select, **where)
+
+    @staticmethod
+    def insert_s(course_id: str, prof):
+        sql = ""
+        if type(prof) == int:
+            sql += f"INSERT INTO course_professors (course_id, professor_id) VALUES ('{course_id}', {prof})"
+        elif type(prof) == str:
+            sql += f"INSERT INTO course_professors (course_id, professor_id) VALUES ('{course_id}', (SELECT id FROM professor WHERE name = '{prof}'))"
+        return sql
+
+    @staticmethod
+    def delete_s(**where):
+        if len(where) < 1:
+            return ""
+        return PostgresDriver.build_delete("course_professors", **where)
+
+    @staticmethod
+    def delete_all_s():
+        return PostgresDriver.build_delete("course_professors")
+
+    @staticmethod
+    def update_s(updates: dict, **where):
+        if len(updates) < 1:
+            return ""
+        return PostgresDriver.build_update("course_professors", updates, **where)

@@ -7,14 +7,30 @@ class Turnus(Enum):
     SOMMER = 1
     BOTH = 2
     NA = 3
+    
+
+class CourseType(Enum):
+    LECTURE = 0
+    PRACTICAL_WORK = 1
+    SEMINAR = 2
+
+
+class Category(Enum):
+    SECURITY = 0
+    HARDWARE = 1
+    NETWORKS = 2
+    SOFTWARE = 3
+    WEB = 4
+    VISUAL = 5
+    MANDATORY = 6
 
 
 class Module:
     """
     Class that represents a module/course
     """
-    def __init__(self, _id: str, name: str, cp: int, _type: str,
-                 turnus: Turnus, category: str = '', content: str = '', objective: str = ''):
+    def __init__(self, _id: str, name: str, cp: int, _type: CourseType,
+                 turnus: Turnus, category: Category = Category.MANDATORY, content: str = '', objective: str = ''):
         """
 
         :param _id: ID of the course
@@ -29,9 +45,9 @@ class Module:
         self.id: str = _id
         self.name: str = name
         self.credit_points: int = cp
-        self.course_type: str = _type
+        self.course_type: CourseType = _type
         self.when_offered: int = turnus.value if type(turnus) == Turnus else turnus
-        self.category: str = category
+        self.category: Category = category
         self.content: str = re.sub(r"'", "`", re.sub(r'"', r'\"', content)) if content and len(content) > 0 else ''
         self.objective: str = re.sub(r"'", "`", re.sub(r'"', r'\"', objective)) if objective and len(objective) > 0 else ''
 

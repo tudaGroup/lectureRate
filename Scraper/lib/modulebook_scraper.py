@@ -14,7 +14,7 @@ class ModulebookScraper:
     def __init__(self, pdfpath, idxs=[], ignore_lst=[]):
         self.modules: list = []
         self.parser = PageParser(to_be_ignored=ignore_lst)
-        self.parser.parse_category = lambda x: 'Informatik'
+        self.parser.parse_study_of_field = lambda x: 'Informatik'
         self.path = pdfpath
         self.pdfobj = open(self.path, 'rb')
         self.pages = slate.PDF(self.pdfobj, line_margin=.7)
