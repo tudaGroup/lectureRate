@@ -17,7 +17,7 @@ class ModulebookScraper:
         self.parser.parse_study_of_field = lambda x: 'Informatik'
         self.path = pdfpath
         self.pdfobj = open(self.path, 'rb')
-        self.pages = slate.PDF(self.pdfobj, line_margin=.7)
+        self.pages = slate.PDF(self.pdfobj, line_margin=.6)
         self.module_begin = re.compile(r'Modulbeschreibung')
         self.module_end = re.compile('Lernergebnisse')
         self.indexes = idxs

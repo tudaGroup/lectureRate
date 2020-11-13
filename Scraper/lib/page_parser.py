@@ -24,7 +24,7 @@ class PageParser:
         self.arbeitsaufwandcp_flag = re.compile(r'Arbeitsaufwand\s*\(CP\)')
         self.turnus_flag = re.compile('Angebotsturnus')
         self.language_flag = re.compile('Sprache')
-        self.course_nr_flag = re.compile('Kurs\s+Nr.')
+        self.course_nr_flag = re.compile(r'Kurs\s+Nr.')
         self.course_name_flag = re.compile("Kursname")
         self.sws_flag = re.compile('SWS')
         self.coordinator_re = re.compile(r'\s*Koordinatoren/Koordinatorinnen\s*')
@@ -93,7 +93,7 @@ class PageParser:
         category = self.parse_category(page_pypdf)
         content = self.parse_content(page_pypdf)
         objectives = self.parse_objectives(page_pypdf)
-        return Module(_id, name, cp, _type, turnus, category, content, objectives)
+        return Module(_id, name, cp, self.type_mapping[_type] if _type in self.type_mapping.keys() else CourseType.LECTURE, turnus, category, content, objectives)
 
     def parse_name(self, page):
         """

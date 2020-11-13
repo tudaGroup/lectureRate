@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import urllib3
 import re
+from lib.module import CourseType
 
 
 class WebScraper:
@@ -18,6 +19,18 @@ class WebScraper:
         self.id_regex = re.compile(r"(?P<id>\d\d\s*-\s*\w\w\s*-\s*\d\d\d\d)-(?P<type>\w\w)\s+(?P<module_name>.+)")
         self.string_tags = re.compile(r"[bi]$")
         self.container_tags = re.compile(r"(ul|li|p)$")
+        self.type_mapping = {
+            'iv': CourseType.LECTURE,
+            'pj': CourseType.SEMINAR,
+            'pl': CourseType.PRACTICAL_WORK,
+            'pp': CourseType.PRACTICAL_WORK,
+            'pr': CourseType.PRACTICAL_WORK,
+            'se': CourseType.SEMINAR,
+            'tt': CourseType.SEMINAR,
+            'ue': CourseType.LECTURE,
+            'vl': CourseType.LECTURE,
+            'vu': CourseType.LECTURE
+        }
 
     def scrape(self, url=None):
         """
@@ -64,7 +77,7 @@ class WebScraper:
                 else:
                     content = ''
                 content = re.sub(r"'", "`", re.sub(r'"', r'\"', content))
-                results.append((_id, name, _type, professors, content))
+                results.append((_id, name, self.type_mapping[_type] if _type in self.type_mapping.keys() else CourseType.LECTURE, professors, content))
         return results
 
     def parse_content(self, content_tag):

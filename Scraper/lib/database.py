@@ -314,6 +314,7 @@ class ProfessorTable(PostgresDriver):
     @staticmethod
     def insert_s(prof_name: str):
         sql = PostgresDriver.build_insert("professor", name=prof_name)
+        sql += ' ON CONFLICT (name) DO NOTHING'
         return sql
 
     @staticmethod

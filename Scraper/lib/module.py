@@ -30,7 +30,7 @@ class Module:
     Class that represents a module/course
     """
     def __init__(self, _id: str, name: str, cp: int, _type: CourseType,
-                 turnus: Turnus, category: Category = Category.MANDATORY, content: str = '', objective: str = ''):
+                 turnus: Turnus, category: Category = Category.MANDATORY, content: str = '', objective: str = '', offered_this_semester=False):
         """
 
         :param _id: ID of the course
@@ -47,6 +47,7 @@ class Module:
         self.credit_points: int = cp
         self.course_type: CourseType = _type
         self.when_offered: int = turnus.value if type(turnus) == Turnus else turnus
+        self.offered_this_semester = offered_this_semester
         self.category: Category = category
         self.content: str = re.sub(r"'", "`", re.sub(r'"', r'\"', content)) if content and len(content) > 0 else ''
         self.objective: str = re.sub(r"'", "`", re.sub(r'"', r'\"', objective)) if objective and len(objective) > 0 else ''
@@ -65,9 +66,11 @@ class Module:
             'name': self.name,
             'credit_points': self.credit_points,
             'when_offered': self.when_offered,
-            'category': self.category,
+            'course_type': self.course_type.value,
+            'category': self.category.value,
             'content': self.content,
-            'objective': self.objective
+            'objective': self.objective,
+            'offered_this_semester': self.offered_this_semester
         }
 
     def json(self):

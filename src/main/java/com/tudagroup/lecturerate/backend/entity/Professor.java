@@ -16,6 +16,7 @@ public class Professor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
+    @Column(unique = true)
     private String name;
     @ManyToMany(mappedBy = "professors")
     private List<Course> courses;
